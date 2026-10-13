@@ -22,7 +22,7 @@ El juego combina controles sencillos, enfrentamientos directos y escenarios vari
 | Daniel del Barrio Vallejo | d.delbarrio.2024@alumnos.urjc.es | `bXrriodXn` |
 | Roberto Bueno Bascuñana | r.bueno.2024@alumnos.urjc.es | `betobubas` |
 | Manuel Vadillo Esteban | m.vadillo.2024@alumnos.urjc.es | `manue279` |
-| Lucía Muñoz Mota | l.munoz.2024@alumnos.urjc.es | `luciia99` |
+| Lucía Muñoz Mota | l.munozm.2024@alumnos.urjc.es | `luciia99` |
 
 **Repositorio:** [https://github.com/bXrriodXn/Ring-Out](https://github.com/bXrriodXn/Ring-Out)
 
