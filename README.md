@@ -5,7 +5,7 @@
 # Ring Out
 
 **Juegos en Red · Grado en Diseño y Desarrollo de Videojuegos · URJC · Curso 2026/27**  
-**Grupo [[AÑADIR: número de grupo]]**
+**Grupo E**
 
 ## Descripción de la temática
 
@@ -17,14 +17,12 @@ El juego combina controles sencillos, enfrentamientos directos y escenarios vari
 
 ## Equipo de desarrollo
 
-[[AÑADIR: sustituye las filas de ejemplo por los datos reales de todos los integrantes del grupo. Para cada persona, escribe el nombre y los apellidos completos, el correo institucional de la URJC y el nombre de usuario de GitHub.]]
-
 | Nombre y apellidos | Correo URJC | GitHub |
 | :--- | :--- | :--- |
-| [[Nombre y apellidos del integrante 1]] | [[Correo institucional]] | `[[usuario de GitHub]]` |
-| [[Nombre y apellidos del integrante 2]] | [[Correo institucional]] | `[[usuario de GitHub]]` |
-| [[Nombre y apellidos del integrante 3]] | [[Correo institucional]] | `[[usuario de GitHub]]` |
-| [[Nombre y apellidos del integrante 4]] | [[Correo institucional]] | `[[usuario de GitHub]]` |
+| Daniel del Barrio Vallejo | d.delbarrio.2024@alumnos.urjc.es | `bXrriodXn` |
+| Roberto Bueno Bascuñana | r.bueno.2024@alumnos.urjc.es | `betobubas` |
+| Manuel Vadillo Esteban | m.vadillo.2024@alumnos.urjc.es | `manue279` |
+| Lucía Muñoz Mota | l.munoz.2024@alumnos.urjc.es | `luciia99` |
 
 **Repositorio:** [https://github.com/bXrriodXn/Ring-Out](https://github.com/bXrriodXn/Ring-Out)
 
@@ -55,7 +53,7 @@ Apartados principales:
 
 | Fase | Contenido | Estado |
 | :--- | :--- | :--- |
-| Fase 1 | Equipo, temática y documento de diseño (GDD) | En preparación |
+| Fase 1 | Equipo, temática y documento de diseño (GDD) | Entregada |
 | Fase 2 | Desarrollo del juego en local | Pendiente |
 | Fase 3 | Implementación de la API REST | Pendiente |
 | Fase 4 | Comunicación en tiempo real mediante WebSockets | Pendiente |
