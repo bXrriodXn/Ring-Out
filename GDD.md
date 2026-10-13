@@ -2,7 +2,7 @@
 
 [← Volver al README](README.md)
 
-**Grupo X** · *Integrantes y cuentas de GitHub pendientes de completar en el README.*
+**Grupo E**
 
 ## Índice
 
