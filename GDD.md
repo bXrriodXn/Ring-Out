@@ -36,9 +36,6 @@ Ring Out combina controles sencillos con enfrentamientos centrados en el momento
 
 La propuesta prioriza partidas directas, con margen para mejorar la lectura del rival y el dominio del escenario.
 
-![Imagen promocional de Ring Out](img/portada_presentacion.png)
-
-*Figura 1. Imagen promocional del juego. Este recurso visual debe incorporarse a la carpeta `img`.*
 
 ---
 
@@ -142,9 +139,9 @@ El juego cuenta con cinco arenas de geometría claramente diferenciada. Las ubic
 
 Cada arena dispone de dos armas en posiciones fijas. No todas las arenas tienen que incluir todos los tipos de obstáculo. Al comenzar una ronda, los robots aparecen en posiciones adaptadas a la geometría y orientados hacia el centro, procurando evitar una ventaja inicial injustificada. Las posiciones iniciales de los obstáculos y las armas se restauran en cada nueva ronda.
 
-![Esquema de las arenas](img/mapa_escenario.png)
+![Boceto Mapa](img/mapa.png)
 
-*Figura 2. Esquema de las arenas. Debe sustituirse por un mapa o una lámina con las cinco geometrías previstas.*
+*Figura 1. Esquema de las arenas. Debe sustituirse por un mapa o una lámina con las cinco geometrías previstas.*
 
 ---
 
@@ -159,11 +156,11 @@ El torneo ofrece prestigio y reconocimiento a quienes consiguen imponerse a sus 
 Ambos formaron parte del mismo equipo, pero acabaron separándose por sus distintas maneras de entender el combate. Su enfrentamiento en el torneo convierte la competición en una oportunidad para resolver esa rivalidad deportiva. La historia se presenta mediante la descripción del juego y de sus personajes; no se plantean escenas narrativas ni diálogos durante las partidas.
 
 ### 4.2. Personajes
+![Boceto de Personajes](img/personajes.png)
+
+*Figura 2. Boceto de los personajes. Se puede variar el color.*
 
 #### Bolt
-
-![Boceto de Bolt](img/personaje_bolt.png)
-
 - **Origen:** competidor veterano del circuito de torneos.
 - **Personalidad:** disciplinado, sereno y calculador.
 - **Motivación:** defender su reputación y demostrar que la experiencia continúa siendo una ventaja.
@@ -171,9 +168,6 @@ Ambos formaron parte del mismo equipo, pero acabaron separándose por sus distin
 - **Características jugables:** utiliza las mismas estadísticas y opciones de combate que Rivet. Su identidad se distingue visualmente por el color azul, no por una ventaja jugable.
 
 #### Rivet
-
-![Boceto de Rivet](img/personaje_rivet.png)
-
 - **Origen:** nuevo competidor del torneo.
 - **Personalidad:** impulsivo, enérgico y ambicioso.
 - **Motivación:** ganarse el reconocimiento y demostrar que la nueva generación puede vencer a los veteranos.
@@ -202,7 +196,7 @@ El estilo prioriza la claridad visual sobre el realismo. Las animaciones se cent
 
 ### 5.3. Uso de colores
 
-![Paleta de colores de Ring Out](img/paleta_colores.png)
+![Paleta de colores de Ring Out](img/paleta.png)
 
 *Figura 4. Paleta cromática propuesta para el juego.*
 
@@ -276,7 +270,7 @@ El impacto combinará un efecto sonoro corto con una animación sencilla. Los co
 
 **Menú principal**
 
-![Boceto del menú principal](img/boceto_menu_principal.png)
+![Boceto del menú principal](img/menu_principal.png)
 
 El menú principal ofrecerá las opciones **Jugar**, **Ajustes**, **Ayuda**, **Créditos** y **Salir**. La opción Jugar solicitará el nombre del participante y lo llevará a la sala de espera.
 
@@ -286,7 +280,7 @@ La sala mostrará que se está buscando un rival y el número de participantes c
 
 **Pantalla de juego (HUD)**
 
-![Boceto de la pantalla de juego](img/boceto_pantalla_juego.png)
+![Boceto de la pantalla de juego](img/partida.png)
 
 El HUD mostrará los nombres de ambos jugadores, sus colores y el marcador de rondas. La cámara fija permitirá ver la arena completa.
 
