@@ -3,9 +3,10 @@ Grupo: E
 Juego: Ring Out
 
 Integrantes:
-- Daniel del Barrio Vallejo  - d.delbarrio.2024@alumnos.urjc.es    - GitHub: bXrriodXn
-- Roberto Bueno Bascuñana    - r.bueno.2024@alumnos.urjc.es    - GitHub: betobubas
-- Manuel Vadillo Esteban  - m.vadillo.2024@alumnos.urjc.es   - GitHub: manue279
+- Daniel del Barrio Vallejo - d.delbarrio.2024@alumnos.urjc.es - GitHub: bXrriodXn
+- Roberto Bueno Bascuñana - r.bueno.2024@alumnos.urjc.es - GitHub: betobubas
+- Manuel Vadillo Esteban - m.vadillo.2024@alumnos.urjc.es - GitHub: manue279
 - Lucía Muñoz Mota - l.munozm.2024@alumnos.urjc.es - GitHub: luciia99
 
-Repositorio GitHub: https://github.com/bXrriodXn/Ring-Out
+Repositorio GitHub:
+https://github.com/bXrriodXn/Ring-Out
