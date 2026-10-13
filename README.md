@@ -1,4 +1,4 @@
- <p align="center">
+<p align="center">
   <img src="img/logo.png" alt="Logotipo de Ring Out" width="400">
 </p>
 
@@ -30,7 +30,7 @@ El juego combina controles sencillos, enfrentamientos directos y escenarios vari
 
 ---
 
-## Game Design Document
+## Documento de diseño del juego
 
 El documento de diseño completo se encuentra en **[GDD.md](GDD.md)**.
 
@@ -49,11 +49,9 @@ Apartados principales:
 
 ## Fases del proyecto
 
-[[AÑADIR: antes de entregar, confirma el estado real de la Fase 1. Cuando esté terminada y entregada, cambia «En preparación» por «Entregada». No marques como completadas las fases que todavía no se hayan realizado.]]
-
 | Fase | Contenido | Estado |
 | :--- | :--- | :--- |
-| Fase 1 | Equipo, temática y documento de diseño (GDD) | Entregada |
+| Fase 1 | Equipo, temática y documento de diseño | Entregada |
 | Fase 2 | Desarrollo del juego en local | Pendiente |
 | Fase 3 | Implementación de la API REST | Pendiente |
 | Fase 4 | Comunicación en tiempo real mediante WebSockets | Pendiente |
