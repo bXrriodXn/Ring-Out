@@ -2,7 +2,7 @@
 
 [← Volver al README](README.md)
 
-**Grupo E**
+**Grupo E** · Integrantes y cuentas de GitHub: consultar la tabla de equipo del [README](README.md).
 
 ## Índice
 
@@ -101,7 +101,7 @@ En cada arena aparecen dos armas en posiciones predeterminadas. La recogida es a
 
 | Arma | Fuerza de empuje | Alcance | Recuperación |
 | :--- | :--- | :--- | :--- |
-| Sin arma | Baja | Base | La más corta |
+| Sin arma | Base | Base | La más corta |
 | Guanteletes | Baja | Corto | Baja |
 | Espada | Media | Medio | Media-baja |
 | Lanza | Media | Largo | Media-alta |
@@ -139,9 +139,9 @@ El juego cuenta con cinco arenas de geometría claramente diferenciada. Las ubic
 
 Cada arena dispone de dos armas en posiciones fijas. No todas las arenas tienen que incluir todos los tipos de obstáculo. Al comenzar una ronda, los robots aparecen en posiciones adaptadas a la geometría y orientados hacia el centro, procurando evitar una ventaja inicial injustificada. Las posiciones iniciales de los obstáculos y las armas se restauran en cada nueva ronda.
 
-![Boceto Mapa](img/mapa.png)
+![Mapa de escenarios](img/mapa.png)
 
-*Figura 1. Esquema de las arenas. Debe sustituirse por un mapa o una lámina con las cinco geometrías previstas.*
+*Figura 1. Boceto conceptual de los escenarios de Ring Out.*
 
 ---
 
@@ -156,9 +156,9 @@ El torneo ofrece prestigio y reconocimiento a quienes consiguen imponerse a sus 
 Ambos formaron parte del mismo equipo, pero acabaron separándose por sus distintas maneras de entender el combate. Su enfrentamiento en el torneo convierte la competición en una oportunidad para resolver esa rivalidad deportiva. La historia se presenta mediante la descripción del juego y de sus personajes; no se plantean escenas narrativas ni diálogos durante las partidas.
 
 ### 4.2. Personajes
-![Boceto de Personajes](img/personajes.png)
+![Boceto de personajes](img/personajes.png)
 
-*Figura 2. Boceto de los personajes. Se puede variar el color.*
+*Figura 2. Boceto de los personajes. Bolt se identifica con el azul y Rivet con el rojo; ambos comparten las mismas capacidades jugables.*
 
 #### Bolt
 - **Origen:** competidor veterano del circuito de torneos.
@@ -184,9 +184,9 @@ Los dos robots comparten el mismo modelo base y las mismas capacidades. La difer
 
 ![Logotipo de Ring Out](img/logo.png)
 
-*Figura 3. Logotipo de Ring Out. Se plantea una tipografía gruesa y dinámica que transmita energía y competición.*
+*Figura 3. Logotipo final de Ring Out.*
 
-El logotipo debe ser legible en tamaños pequeños y mantener el contraste con los fondos oscuros. El recurso gráfico definitivo se incorporará a la carpeta `img`.
+El logotipo utiliza letras gruesas y dinámicas para transmitir energía y competición, y está diseñado para mantener su legibilidad en tamaños pequeños.
 
 ### 5.2. Estilo visual
 
@@ -216,21 +216,11 @@ El servidor asignará los colores azul y rojo según la posición de cada partic
 
 ### 5.5. Inspiración artística y cultural
 
-La dirección artística combina la claridad arcade con la lectura lateral de los juegos de plataformas. La competición mecánica permite usar estructuras metálicas, señales de peligro y colores intensos.
+La dirección artística combina la claridad visual de los juegos arcade con la vista lateral de los juegos de plataformas. Las estructuras metálicas, las señales de peligro y los colores intensos ayudan a identificar rápidamente a los robots, las plataformas y los riesgos del escenario. Como referencias de género se consideran [Brawlhalla](https://www.brawlhalla.com/) por sus enfrentamientos de plataformas y [TowerFall](https://www.mattmakesgames.com/) por la importancia del movimiento y la posición en arenas compactas. Se utilizan como referencias generales, sin reproducir sus personajes, escenarios, logotipos ni recursos gráficos.
 
-Como referencias de diseño se estudiarán juegos de combate de plataformas y títulos arcade que prioricen el desplazamiento y la lectura rápida de la acción. Estas referencias servirán como orientación visual y de presentación, sin copiar personajes, escenarios, logotipos ni recursos gráficos. Las referencias concretas y sus enlaces se añadirán al cerrar el material visual utilizado.
+### 5.6. Bocetos y recursos visuales
 
-### 5.6. Bocetos de personajes y pantallas
-
-Los bocetos de Bolt, Rivet, el logotipo, la paleta y las pantallas se almacenarán en `img/`. Los recursos visuales que deben prepararse para completar esta sección son:
-
-- Logotipo y paleta cromática.
-- Bocetos de ambos robots.
-- Bocetos del menú principal, sala de espera, partida, pausa, resultado de ronda, resultado final, ajustes, ayuda y créditos.
-- Esquemas de las cinco arenas y sus principales plataformas y obstáculos.
-- Una imagen promocional sencilla para presentar el concepto del juego.
-
-Los bocetos documentan la propuesta, no una implementación ya realizada.
+Los recursos conceptuales incluidos en `img/` son el logotipo, la paleta de colores, los personajes, el menú principal, los ajustes, la pantalla de partida, la pantalla de victoria, el mapa de escenarios y el diagrama de flujo. Estos materiales ilustran la identidad visual, las pantallas principales y la estructura propuesta del juego. Son diseños conceptuales y no representan funcionalidades ya implementadas.
 
 ---
 
@@ -294,11 +284,18 @@ Al terminar una ronda, se mostrarán el ganador y el marcador actualizado durant
 
 **Resultado final**
 
+![Boceto de fin de partida](img/victoria.png)
+
 La pantalla final mostrará el ganador, los nombres de ambos participantes y el marcador definitivo. Ofrecerá **Revancha** y **Volver al menú**. La revancha permitirá disputar otro encuentro con el mismo rival si ambos siguen conectados y preparados; de lo contrario, el jugador permanecerá esperando a otro rival.
 
-**Ajustes, ayuda y créditos**
+**Ajustes**
 
-- **Ajustes:** controles separados para el volumen de música y efectos de sonido.
+![Boceto de ajustes](img/ajustes.png)
+
+La pantalla de ajustes ofrece controles separados para el volumen de música y efectos de sonido.
+
+**Ayuda y créditos**
+
 - **Ayuda:** explicación del objetivo, controles, armas, peligros y reglas de victoria.
 - **Créditos:** información de autoría y recursos utilizados.
 
@@ -306,32 +303,9 @@ El nombre no puede estar vacío ni contener solo espacios. No se ha definido una
 
 ### 7.2. Diagrama de flujo
 
-```mermaid
-flowchart TD
-    A[Menú principal] --> B[Jugar: introducir nombre]
-    A --> C[Ajustes]
-    A --> D[Ayuda]
-    A --> E[Créditos]
-    A --> X[Salir]
-    C --> A
-    D --> A
-    E --> A
-    B --> F[Sala de espera]
-    F -->|Hay dos jugadores| G[Encuentro]
-    F -->|Rival se desconecta| F
-    G -->|Esc| H[Pausa local]
-    H -->|Continuar| G
-    H -->|Salir al menú: abandono| I[Victoria del rival]
-    G -->|Termina una ronda| J[Resultado de ronda]
-    J -->|Nadie llega a 3 victorias| G
-    J -->|Un jugador llega a 3 victorias| K[Resultado final]
-    G -->|Rival abandona o se desconecta| K
-    K -->|Revancha y ambos disponibles| G
-    K -->|Revancha sin rival disponible| F
-    K -->|Volver al menú| A
-```
+![Diagrama de flujo de Ring Out](img/diagrama_flujo.png)
 
-*Figura 9. Flujo general de navegación y de un encuentro.*
+*Figura 9. Diagrama de navegación entre las pantallas y los estados principales del encuentro.*
 
 ---
 
@@ -347,11 +321,13 @@ flowchart TD
 
 ## 9. Referencias
 
-Las referencias definitivas deben corresponder a materiales consultados y recursos utilizados. Se indicarán autoría, licencia y enlace para cada recurso externo.
+Las siguientes referencias documentan la tecnología prevista y dos referentes generales de género. Los recursos gráficos incluidos en `img/` son materiales conceptuales propios del proyecto.
 
 - Phaser Studio. (s. f.). *Phaser Documentation*. https://docs.phaser.io/
+- Brawlhalla. (s. f.). *Sitio oficial*. https://www.brawlhalla.com/
+- Matt Makes Games. (s. f.). *TowerFall*. https://www.mattmakesgames.com/
 - OpenJS Foundation. (s. f.). *Node.js documentation*. https://nodejs.org/docs/latest/api/
 - MDN Web Docs. (s. f.). *WebSocket API*. https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 - MDN Web Docs. (s. f.). *Using the Fetch API*. https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 
-**Recursos gráficos y sonoros:** se añadirán aquí los autores, las licencias y las URL de los recursos externos que se incorporen al proyecto. Los recursos propios se identificarán como tales.
+**Recursos gráficos y sonoros:** las pistas musicales y los efectos definitivos aún no están seleccionados. Antes de incorporarlos al juego, se documentarán su procedencia y licencia.
