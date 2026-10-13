@@ -4,6 +4,8 @@
 
 **Grupo E** · Integrantes y cuentas de GitHub: consultar la tabla de equipo del [README](README.md).
 
+> **Estado del documento:** este GDD recoge el diseño previsto para el juego. Las mecánicas, pantallas y sistemas descritos son propuestas de diseño y no deben interpretarse como funcionalidades ya implementadas o probadas.
+
 ## Índice
 
 1. [Introducción](#1-introducción)
@@ -24,17 +26,17 @@
 
 **Ring Out** es un juego competitivo de acción y plataformas en 2D para dos jugadores conectados en tiempo real. Cada participante controla un robot dentro de una arena y debe utilizar el movimiento, los saltos y los ataques para empujar al rival fuera de la zona segura. No hay barras de vida ni se busca destruir al contrincante: la victoria depende de la posición, la precisión y el uso del escenario.
 
-Cada encuentro se disputa al mejor de cinco rondas. Gana el encuentro quien consigue primero tres victorias de ronda. Las arenas presentan distintas distribuciones de plataformas y obstáculos, por lo que el jugador debe adaptar sus movimientos y ataques al terreno.
+Cada encuentro se juega al mejor de cinco rondas. Es decir, gana quien consigue primero tres victorias. Las cinco arenas tienen plataformas y obstáculos diferentes, así que los jugadores tendrán que adaptar sus movimientos y ataques a cada escenario.
 
-### 1.2. Propuesta de valor
+### 1.2. Qué ofrece el juego
 
-Ring Out combina controles sencillos con enfrentamientos centrados en el momento del ataque, la distancia, el salto y el posicionamiento. Sus elementos diferenciales son:
+Los controles de Ring Out son sencillos, pero para ganar hay que elegir bien cuándo atacar, calcular la distancia con el rival y aprovechar los saltos. Estas son sus características principales:
 
-- **Combate por desplazamiento:** los ataques empujan al rival en lugar de restarle vida.
-- **Armas con características distintas:** modifican el alcance, la fuerza del empuje y el tiempo de recuperación del ataque.
-- **Arenas variadas:** las plataformas, los huecos y los obstáculos cambian las posibilidades de movimiento y el riesgo de cada enfrentamiento.
+- **Combate basado en empujes:** los ataques desplazan al rival en lugar de quitarle vida.
+- **Armas diferentes:** cada una cambia el alcance, la fuerza del empuje y el tiempo que hay que esperar antes de volver a atacar.
+- **Cinco arenas:** cada una tiene plataformas y obstáculos distintos, por lo que hay que adaptar los movimientos a cada escenario.
 
-La propuesta prioriza partidas directas, con margen para mejorar la lectura del rival y el dominio del escenario.
+La intención es que cualquiera pueda entender las reglas en poco tiempo y que, con la práctica, aprenda a anticiparse al rival y a sacar partido del escenario.
 
 
 ---
@@ -54,7 +56,7 @@ La propuesta prioriza partidas directas, con margen para mejorar la lectura del 
 | **Representación** | 2D, vista lateral |
 | **Licencia** | Apache License 2.0 |
 
-La clasificación por edades es orientativa y no representa una certificación oficial.
+PEGI 7 es solo una estimación del equipo; el juego no tiene una clasificación PEGI oficial.
 
 ---
 
@@ -93,7 +95,7 @@ El ataque se dirige hacia el lado al que mira el robot. La dirección queda fija
 - **Ataques simultáneos:** los dos jugadores pueden atacar a la vez. Si ambos ataques cumplen sus condiciones de impacto, los dos pueden resolverse.
 - **Colisión entre jugadores:** los robots pueden atravesarse durante el movimiento normal. La interacción física entre ellos se produce mediante los ataques y sus empujes, no por una colisión corporal.
 
-Los valores de velocidad, salto, alcance, fuerza y recuperación se ajustarán durante la implementación y las pruebas. En esta fase se definen relaciones, no cifras de balance aún no comprobadas.
+La velocidad, la altura del salto, el alcance, la fuerza y el tiempo de recuperación se ajustarán durante el desarrollo y las pruebas. De momento, se describen las diferencias entre armas sin inventar cifras que todavía no se han comprobado.
 
 #### 3.3.2. Armas y objetos
 
@@ -107,7 +109,7 @@ En cada arena aparecen dos armas en posiciones predeterminadas. La recogida es a
 | Lanza | Media | Largo | Media-alta |
 | Martillo | Alta | Corto-medio | La más larga |
 
-La espada y la lanza tienen una fuerza aproximada similar. Los valores concretos se decidirán durante el ajuste de jugabilidad. Las armas no proporcionan habilidades especiales adicionales: sus diferencias se limitan a la fuerza, el alcance y la recuperación del ataque.
+La espada y la lanza tienen una fuerza de empuje parecida. Los valores exactos se ajustarán durante las pruebas. Las armas no tienen habilidades especiales: solo cambian la fuerza, el alcance y el tiempo de recuperación.
 
 #### 3.3.3. Sistema de puntuación
 
@@ -121,7 +123,7 @@ No se utilizan puntos numéricos por golpe ni puntuación acumulada. Cada ronda 
 - **Pinchos:** tocarlos provoca la derrota inmediata de la ronda.
 - **Plataformas temporales:** aparecen y desaparecen siguiendo un ciclo automático. Antes de desaparecer muestran una señal visual de advertencia; permanecen ausentes durante un intervalo y después reaparecen.
 - **Plataformas móviles:** se desplazan de forma continua y predecible entre dos posiciones, invierten la dirección al llegar a cada extremo y transportan al robot que se encuentre encima.
-- **Dificultad:** no aumenta automáticamente con el número de ronda. La dificultad procede principalmente de la geometría de cada arena, los obstáculos y las decisiones de ambos jugadores. Las cinco arenas se seleccionan al azar sin repetir una arena hasta haber utilizado las cinco; un encuentro puede terminar antes de que se hayan usado todas.
+- **Dificultad:** no aumenta automáticamente con el número de ronda. La dificultad depende sobre todo de la forma de cada arena, de sus obstáculos y de las decisiones de los jugadores. Las cinco arenas se seleccionan al azar sin repetir una arena hasta haber utilizado las cinco; un encuentro puede terminar antes de que se hayan usado todas.
 
 La pausa afecta únicamente al jugador que la activa. Al pulsar `Esc`, su robot queda inmóvil, pero conserva su posición y puede ser golpeado, empujado o derrotado. El rival continúa jugando. No se concede invulnerabilidad. Para volver a jugar hay que seleccionar «Continuar»; salir al menú durante un encuentro cuenta como abandono y concede la victoria al rival.
 
@@ -129,7 +131,7 @@ Si un jugador se desconecta o abandona durante el encuentro, el participante que
 
 ### 3.5. Escenario
 
-El juego cuenta con cinco arenas de geometría claramente diferenciada. Las ubicaciones exactas de las plataformas y los obstáculos se concretarán durante el desarrollo, manteniendo las características generales siguientes:
+El juego tendrá cinco arenas con formas distintas. La posición exacta de las plataformas y los obstáculos se decidirá durante el desarrollo, manteniendo estas ideas generales:
 
 1. **Arena de entrenamiento:** plataforma principal amplia, sin peligros especiales; sirve como escenario inicial sencillo.
 2. **Pasarela:** zonas a distintas alturas unidas por pasos estrechos y huecos que requieren saltos.
@@ -149,9 +151,9 @@ Cada arena dispone de dos armas en posiciones fijas. No todas las arenas tienen 
 
 ### 4.1. Historia
 
-En un futuro en el que los combates entre robots se han convertido en un espectáculo deportivo popular, los competidores participan en torneos donde la victoria no depende de destruir al contrario, sino de demostrar control, precisión y capacidad para dominar la arena. El objetivo es empujar al rival fuera de la zona de combate y mantenerse dentro de ella.
+En el mundo de Ring Out, los combates entre robots se han convertido en un deporte popular. Los participantes compiten en torneos donde no gana quien destruye al contrario, sino quien demuestra más control, precisión y capacidad para dominar la arena. El objetivo es empujar al rival fuera de la zona de combate sin caer uno mismo.
 
-El torneo ofrece prestigio y reconocimiento a quienes consiguen imponerse a sus rivales. Entre los participantes destacan Bolt, un veterano que quiere demostrar que la experiencia sigue siendo decisiva, y Rivet, un recién llegado que busca probar que la nueva generación puede superar a los competidores consagrados.
+Ganar el torneo da prestigio y reconocimiento. Entre sus participantes están Bolt, un veterano que quiere demostrar que la experiencia sigue contando, y Rivet, un recién llegado que quiere probar que la nueva generación también puede vencer a los competidores más experimentados.
 
 Ambos formaron parte del mismo equipo, pero acabaron separándose por sus distintas maneras de entender el combate. Su enfrentamiento en el torneo convierte la competición en una oportunidad para resolver esa rivalidad deportiva. La historia se presenta mediante la descripción del juego y de sus personajes; no se plantean escenas narrativas ni diálogos durante las partidas.
 
@@ -192,7 +194,7 @@ El logotipo utiliza letras gruesas y dinámicas para transmitir energía y compe
 
 Ring Out utilizará un estilo **cartoon 2D** con estética arcade. Los robots tendrán siluetas compactas y reconocibles, extremidades mecánicas sencillas y pocos detalles internos. Los escenarios representarán estructuras metálicas propias de una arena deportiva, sin decoración que dificulte distinguir plataformas, armas, peligros o personajes.
 
-El estilo prioriza la claridad visual sobre el realismo. Las animaciones se centrarán en el movimiento, el salto, el ataque, el impacto y la derrota.
+Se busca que todo se distinga con facilidad, en lugar de intentar un aspecto realista. Las animaciones principales serán las de movimiento, salto, ataque, impacto y derrota.
 
 ### 5.3. Uso de colores
 
@@ -216,11 +218,11 @@ El servidor asignará los colores azul y rojo según la posición de cada partic
 
 ### 5.5. Inspiración artística y cultural
 
-La dirección artística combina la claridad visual de los juegos arcade con la vista lateral de los juegos de plataformas. Las estructuras metálicas, las señales de peligro y los colores intensos ayudan a identificar rápidamente a los robots, las plataformas y los riesgos del escenario. Como referencias de género se consideran [Brawlhalla](https://www.brawlhalla.com/) por sus enfrentamientos de plataformas y [TowerFall](https://www.mattmakesgames.com/) por la importancia del movimiento y la posición en arenas compactas. Se utilizan como referencias generales, sin reproducir sus personajes, escenarios, logotipos ni recursos gráficos.
+El estilo visual parte de la claridad de los juegos arcade y de la vista lateral típica de los juegos de plataformas. Las estructuras metálicas, las señales de peligro y los colores intensos ayudarán a distinguir los robots, las plataformas y las zonas peligrosas. Como referencias se tendrán en cuenta [Brawlhalla](https://www.brawlhalla.com/), por sus combates en plataformas, y [TowerFall](https://www.mattmakesgames.com/), por el uso del movimiento y la posición dentro de arenas pequeñas. No se copiarán sus personajes, escenarios, logotipos ni imágenes.
 
 ### 5.6. Bocetos y recursos visuales
 
-Los recursos conceptuales incluidos en `img/` son el logotipo, la paleta de colores, los personajes, el menú principal, los ajustes, la pantalla de partida, la pantalla de victoria, el mapa de escenarios y el diagrama de flujo. Estos materiales ilustran la identidad visual, las pantallas principales y la estructura propuesta del juego. Son diseños conceptuales y no representan funcionalidades ya implementadas.
+La carpeta `img/` contiene el logotipo, la paleta de colores, los bocetos de personajes, el menú principal, los ajustes, la pantalla de partida, la pantalla de victoria, el mapa de escenarios y el diagrama de flujo. Estos dibujos sirven para hacerse una idea del aspecto del juego y de la organización de sus pantallas. Son propuestas de diseño, no pantallas ya implementadas.
 
 ---
 
@@ -228,7 +230,7 @@ Los recursos conceptuales incluidos en `img/` son el logotipo, la paleta de colo
 
 ### 6.1. Banda sonora
 
-Se plantean dos pistas musicales en bucle: una más tranquila para el menú y otra más enérgica para los enfrentamientos. El cambio entre ambas será directo, sin transiciones elaboradas. No se contemplan voces.
+El juego tendrá dos músicas en bucle: una tranquila para el menú y otra más enérgica para las partidas. El cambio entre ellas será directo. No habrá voces.
 
 | Pista | Escena | Estilo / ambiente | Fuente |
 | :--- | :--- | :--- | :--- |
@@ -239,7 +241,7 @@ La fuente y la licencia de las pistas definitivas deberán documentarse antes de
 
 ### 6.2. Efectos de sonido
 
-Los efectos serán breves y de estilo arcade, para reforzar acciones sin saturar la partida.
+Los efectos de sonido serán breves y de estilo arcade. Acompañarán las acciones sin tapar el resto del sonido del juego.
 
 | Efecto | Momento de reproducción |
 | :--- | :--- |
@@ -250,7 +252,7 @@ Los efectos serán breves y de estilo arcade, para reforzar acciones sin saturar
 | Caída o derrota | Cuando se resuelve una derrota |
 | Interfaz | Al activar botones o cambiar de pantalla |
 
-El impacto combinará un efecto sonoro corto con una animación sencilla. Los controles de ajustes permitirán regular por separado el volumen de la música y el de los efectos.
+El impacto irá acompañado de un sonido corto y una animación sencilla. En ajustes se podrá cambiar por separado el volumen de la música y el de los efectos.
 
 ---
 
@@ -272,7 +274,7 @@ La sala mostrará que se está buscando un rival y el número de participantes c
 
 ![Boceto de la pantalla de juego](img/partida.png)
 
-El HUD mostrará los nombres de ambos jugadores, sus colores y el marcador de rondas. La cámara fija permitirá ver la arena completa.
+La interfaz de juego mostrará los nombres de ambos jugadores, sus colores y el marcador de rondas. La cámara será fija y permitirá ver la arena completa.
 
 **Pausa**
 
@@ -286,7 +288,7 @@ Al terminar una ronda, se mostrarán el ganador y el marcador actualizado durant
 
 ![Boceto de fin de partida](img/victoria.png)
 
-La pantalla final mostrará el ganador, los nombres de ambos participantes y el marcador definitivo. Ofrecerá **Revancha** y **Volver al menú**. La revancha permitirá disputar otro encuentro con el mismo rival si ambos siguen conectados y preparados; de lo contrario, el jugador permanecerá esperando a otro rival.
+La pantalla final mostrará quién ha ganado, los nombres de los dos participantes y el marcador definitivo. Habrá dos opciones: **Revancha** y **Volver al menú**. Se podrá jugar otra vez contra el mismo rival si ambos siguen conectados y aceptan; si no, el jugador tendrá que esperar a otro contrincante.
 
 **Ajustes**
 
@@ -321,7 +323,7 @@ El nombre no puede estar vacío ni contener solo espacios. No se ha definido una
 
 ## 9. Referencias
 
-Las siguientes referencias documentan la tecnología prevista y dos referentes generales de género. Los recursos gráficos incluidos en `img/` son materiales conceptuales propios del proyecto.
+Estas referencias corresponden a la tecnología prevista y a dos juegos que sirven como referencia de género. Los recursos gráficos de la carpeta `img/` se han preparado como material conceptual para este proyecto.
 
 - Phaser Studio. (s. f.). *Phaser Documentation*. https://docs.phaser.io/
 - Brawlhalla. (s. f.). *Sitio oficial*. https://www.brawlhalla.com/
