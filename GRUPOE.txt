@@ -5,7 +5,7 @@ Juego: Ring Out
 Integrantes:
 - Daniel del Barrio Vallejo  - d.delbarrio.2024@alumnos.urjc.es    - GitHub: bXrriodXn
 - Roberto Bueno Bascuñana    - r.bueno.2024@alumnos.urjc.es    - GitHub: betobubas
-- Lucía Muñoz Mota   - m.vadillo.2024@alumnos.urjc.es   - GitHub: alumno3-ejemplo
-- Manuel Vadillo Esteban - l.munozm.2024@alumnos.urjc.es - GitHub: alumno4-ejemplo
+- Manuel Vadillo Esteban  - m.vadillo.2024@alumnos.urjc.es   - GitHub: alumno3-ejemplo
+- Lucía Muñoz Mota - l.munozm.2024@alumnos.urjc.es - GitHub: alumno4-ejemplo
 
 Repositorio GitHub: https://github.com/bXrriodXn/Ring-Out
