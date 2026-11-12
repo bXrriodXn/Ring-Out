@@ -13,6 +13,8 @@
 
 Las partidas se disputan al mejor de cinco rondas y gana quien consigue tres victorias. Durante cada enfrentamiento, los jugadores pueden recoger distintas armas que modifican la fuerza, el alcance y el tiempo de recuperación de sus ataques. Las cinco arenas presentan distribuciones de plataformas y obstáculos diferentes, lo que influye en el movimiento y en la estrategia de cada partida.
 
+También se contempla un modo multijugador local para dos personas desde el mismo ordenador, utilizando un único teclado con controles independientes para cada jugador. Esta modalidad queda pendiente de desarrollo.
+
 El juego combina controles sencillos, enfrentamientos directos y escenarios variados. Su lema es **«Empuja. Resiste. Gana.»**
 
 ## Equipo de desarrollo
