@@ -82,6 +82,19 @@ Cada participante juega desde su propio equipo. Los controles son los mismos par
 
 El ataque se dirige hacia el lado al que mira el robot. La dirección queda fijada al iniciar el ataque, aunque el jugador cambie de orientación durante la animación. Es necesario soltar el botón del ratón y volver a pulsarlo para realizar otro ataque.
 
+#### 3.2.1. Modo multijugador local
+
+Además del modo online, se contempla la posibilidad de jugar dos personas desde el mismo ordenador, utilizando un único teclado. Para ello, cada jugador tendría asignado un conjunto de teclas diferente.
+
+| Acción | Jugador 1 | Jugador 2 |
+| :--- | :--- | :--- |
+| Moverse a la izquierda | `A` | `←` |
+| Moverse a la derecha | `D` | `→` |
+| Saltar | `W` | `↑` |
+| Atacar | `Espacio` | `Enter` |
+
+Esta alternativa permitiría disfrutar de partidas competitivas sin necesidad de que ambos jugadores dispongan de un ordenador propio. Los controles se mantendrían separados para que cada jugador pudiera realizar sus acciones de forma independiente.
+
 ### 3.3. Mecánicas
 
 #### 3.3.1. Movimiento, salto y combate
