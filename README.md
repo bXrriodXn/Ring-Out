@@ -9,11 +9,9 @@
 
 ## Descripción de la temática
 
-*Ring Out* es un videojuego competitivo de acción y plataformas en 2D para dos jugadores en tiempo real a través de la red. Cada jugador controla un robot en una arena y debe utilizar el movimiento, los saltos y los ataques para empujar al rival fuera de la plataforma y ganar la ronda.
+*Ring Out* es un videojuego competitivo de acción y plataformas en 2D para dos jugadores en tiempo real a través de la red o en local. Cada jugador controla un robot en una arena y debe utilizar el movimiento, los saltos y los ataques para empujar al rival fuera de la plataforma y ganar la ronda.
 
 Las partidas se disputan al mejor de cinco rondas y gana quien consigue tres victorias. Durante cada enfrentamiento, los jugadores pueden recoger distintas armas que modifican la fuerza, el alcance y el tiempo de recuperación de sus ataques. Las cinco arenas presentan distribuciones de plataformas y obstáculos diferentes, lo que influye en el movimiento y en la estrategia de cada partida.
-
-También se contempla un modo multijugador local para dos personas desde el mismo ordenador, utilizando un único teclado con controles independientes para cada jugador. Esta modalidad queda pendiente de desarrollo.
 
 El juego combina controles sencillos, enfrentamientos directos y escenarios variados. Su lema es **«Empuja. Resiste. Gana.»**
 
