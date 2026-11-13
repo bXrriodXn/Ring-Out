@@ -1,9 +1,9 @@
 // Este archivo contiene Notas para
-// facilitar la comprensión entre miembros del equipo.
+// facilitar la comprensiï¿½n entre miembros del equipo.
 
 
 // Objeto de JavaScript que contiene
-// las opciones con las que arrancará Phaser.
+// las opciones con las que arrancarï¿½ Phaser.
 
 const config = {
     type: Phaser.AUTO,
@@ -11,6 +11,10 @@ const config = {
     width: 960,
     height: 540,
     backgroundColor: '#1b1d2a',
+   
+    // Para evitar filtros
+    //  y que se vea borroso el personaje que es pixel art
+    pixelArt: true,
 
     // El cargador de escenas va a parte
     scene: [BootScene]
