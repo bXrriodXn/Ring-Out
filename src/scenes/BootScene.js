@@ -43,8 +43,8 @@ class BootScene extends Phaser.Scene {
         registerRobotAnimations(this, 'rivet');
 
        // Crear personajes
-        const bolt = this.add.sprite(310, 392, 'bolt');
-        const rivet = this.add.sprite(650, 392, 'rivet');
+        const bolt = this.add.sprite(310, 400, 'bolt');
+        const rivet = this.add.sprite(650, 400, 'rivet');
 
         bolt.setScale(3);
         rivet.setScale(3);
