@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/logo.png" alt="Logotipo de Ring Out" width="400">
+  <img src="img/logo_pixel.png" alt="Logotipo de Ring Out" width="400">
 </p>
 
 # Ring Out
