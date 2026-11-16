@@ -7,15 +7,16 @@ class MenuScene extends Phaser.Scene {
 
     create() {
 
+        //Dividiendo el ancho de imagen entre 2
         const centerX = this.scale.width / 2;
 
         // LOGOTIPO
-        const logo = this.add.image(centerX, 95, 'logo');
+        const logo = this.add.image(centerX, 100, 'logo');
 
         logo.setScale(Math.min(
             440 / logo.width,
             145 / logo.height,
-            1
+            2
         ));
 
         // PERSONAJES
@@ -42,9 +43,9 @@ class MenuScene extends Phaser.Scene {
         // OPCIONES DEL MENÚ
         const options = [
             { text: 'JUGAR LOCAL', y: 235 },
-            { text: 'AJUSTES', y: 290 },
-            { text: 'AYUDA', y: 345 },
-            { text: 'CREDITOS', y: 400 }
+            { text: 'AJUSTES', y: 290, target: 'SettingsScene'},
+            { text: 'AYUDA', y: 345, target: 'HelpScene' },
+            { text: 'CREDITOS', y: 400, target: 'CreditsScene' }
         ];
 
         // CREAR BOTONES
@@ -84,12 +85,21 @@ class MenuScene extends Phaser.Scene {
                 button.setFillStyle(0x263e52);
             });
 
-            // Clic
+            // Clic En los botones
             button.on('pointerdown', () => {
-                status.setText(
-                    `${option.text}: pendiente de implementar`
-                );
-            });
+
+             if (option.target) {
+              this.scene.start(option.target);
+             return;
+            }
+
+            // Esta es la opción si el botón no lleva a escena implementada
+            status.setText(
+                `${option.text}: pendiente de implementar`
+            );
+                });    
+
+                
         }
     }
 }

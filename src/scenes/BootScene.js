@@ -19,11 +19,16 @@ class BootScene extends Phaser.Scene {
             frameHeight: 64
         });
 
+        
+
 }
+
 
     create() {
     
-        
+    // Esto permite recuperar el volumen almacenado 
+    // cuando arrancamos el juego.    
+   
      
         
     // Registrar las animaciones de ambos robots
@@ -32,7 +37,8 @@ class BootScene extends Phaser.Scene {
 
     // Pasar al menú principal
     this.scene.start('MenuScene');
-
+    
+    this.sound.volume = loadGameSettings().volume;
     
     }
 }
