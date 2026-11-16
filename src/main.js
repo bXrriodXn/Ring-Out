@@ -17,7 +17,7 @@ const config = {
     pixelArt: true,
 
     // El cargador de escenas va a parte
-    scene: [BootScene]
+    scene: [BootScene,MenuScene]
 };
 
 const game = new Phaser.Game(config);
