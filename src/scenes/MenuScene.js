@@ -62,7 +62,7 @@ class MenuScene extends Phaser.Scene {
 
        // Opciones del menú
         const options = [
-            { texture: 'botonLocal', y: 205 },
+            { texture: 'botonLocal', y: 205, target: 'GameScene' },
             { texture: 'botonOnline', y: 263 },
             { texture: 'botonSettings', y: 321, target: 'SettingsScene' },
             { texture: 'botonHelp', y: 379, target: 'HelpScene' },

@@ -16,8 +16,16 @@ const config = {
     //  y que se vea borroso el personaje que es pixel art
     pixelArt: true,
 
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 1000 },
+            debug: true
+        }
+    },
+
     // El cargador de escenas va a parte
-    scene: [BootScene,MenuScene,HelpScene,SettingsScene,CreditsScene]
+    scene: [BootScene,MenuScene,HelpScene,SettingsScene,CreditsScene, GameScene]
 };
 
 const game = new Phaser.Game(config);
