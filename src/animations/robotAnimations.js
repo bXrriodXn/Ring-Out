@@ -1,12 +1,16 @@
 // Registra una animación en el gestor de animaciones de Phaser.
 
+
 const ROBOT_ANIMATIONS = {
     idle:  { start: 0,  end: 5,  fps: 6,  repeat: -1 },
     walk:  { start: 8,  end: 13, fps: 12, repeat: -1 },
     jump:  { start: 16, end: 23, fps: 10, repeat: 0 },
+    rise:  { start: 16, end: 19, fps: 10, repeat: 0 },
+    fall:  { start: 20, end: 23, fps: 10, repeat: 0 },
     hurt:  { start: 24, end: 27, fps: 15, repeat: 0 },
     death: { start: 32, end: 39, fps: 10, repeat: 0 }
 };
+
 
 function registerRobotAnimations(scene, robotName) {
 
