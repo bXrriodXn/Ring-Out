@@ -6,9 +6,28 @@ class SettingsScene extends Phaser.Scene {
     }
 
     create() {
+
+
         const settings = loadGameSettings();
         this.sound.volume = settings.volume;
 
+        const centerX = this.scale.width / 2;
+        const centerY = this.scale.height / 2;
+
+         // Fondo del menú
+        const fondo = this.add.image(centerX, centerY, 'fondoMenu');
+        fondo.setDisplaySize(this.scale.width, this.scale.height);
+        fondo.setDepth(-1);
+
+        // Capa oscura semitransparente
+        this.add.rectangle(
+        centerX,
+        centerY,
+        this.scale.width,
+        this.scale.height,
+        0x000000,
+        0.5
+        ).setDepth(-0.5);
         this.add.text(480, 45, 'AJUSTES', {
             fontFamily: 'Arial',
             fontSize: '36px',

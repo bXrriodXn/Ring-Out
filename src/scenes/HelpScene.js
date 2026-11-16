@@ -7,6 +7,22 @@ class HelpScene extends Phaser.Scene {
 
     create() {
         const centerX = this.scale.width / 2;
+        const centerY = this.scale.height / 2;
+
+         // Fondo del menú
+        const fondo = this.add.image(centerX, centerY, 'fondoMenu');
+        fondo.setDisplaySize(this.scale.width, this.scale.height);
+        fondo.setDepth(-1);
+
+        // Capa oscura semitransparente
+        this.add.rectangle(
+        centerX,
+        centerY,
+        this.scale.width,
+        this.scale.height,
+        0x000000,
+        0.5
+        ).setDepth(-0.5);
 
         // Título de la pantalla
         this.add.text(centerX, 55, 'COMO JUGAR', {
