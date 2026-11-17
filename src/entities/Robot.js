@@ -15,6 +15,10 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.spawnY = y;
         this.initialFacingLeft = facingLeft;
 
+        // Estado del combate
+        this.knockbackX = 0;
+        this.nextAttackAt = 0;
+
         // Aspecto y cuerpo físico
         this.setScale(1.5);
         this.setFlipX(facingLeft);
@@ -41,15 +45,83 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(-600);
     }
 
+    attack(opponent) {
+    const now = this.scene.time.now;
+
+    if (now < this.nextAttackAt) return;
+    this.nextAttackAt = now + 350;
+
+    const direction = this.flipX ? -1 : 1;
+    const reach = 70;
+
+    const area = new Phaser.Geom.Rectangle(
+        direction > 0
+            ? this.body.x + this.body.width
+            : this.body.x - reach,
+        this.body.y + 10,
+        reach,
+        this.body.height - 20
+    );
+
+    const opponentArea = new Phaser.Geom.Rectangle(
+        opponent.body.x,
+        opponent.body.y,
+        opponent.body.width,
+        opponent.body.height
+    );
+
+    const hit = Phaser.Geom.Intersects.RectangleToRectangle(
+        area, opponentArea
+    );
+
+    if (hit) {
+        opponent.receiveKnockback(direction * 560);
+    }
+
+    // Efecto visual del ataque
+    const effect = this.scene.add.rectangle(
+        area.centerX,
+        area.centerY,
+        area.width,
+        area.height,
+        hit ? 0xff7744 : 0xffd466,
+        0.35
+    ).setDepth(10);
+
+    this.scene.tweens.add({
+        targets: effect,
+        alpha: 0,
+        duration: 130,
+        onComplete: () => effect.destroy()
+    });
+}
+
+receiveKnockback(speed) {
+    this.knockbackX = Phaser.Math.Clamp(
+        this.knockbackX + speed,
+        -900,
+        900
+    );
+}
+
     // Actualizar movimiento y animaciones
-    updateMovement(keysDown) {
+    updateMovement(keysDown, delta)  {
         const left = keysDown.has(this.controls.left);
         const right = keysDown.has(this.controls.right);
 
         const direction = Number(right) - Number(left);
 
-        // Movimiento horizontal
-        this.setVelocityX(direction * 230);
+        // Movimiento voluntario + empuje
+        this.setVelocityX(direction * 230 + this.knockbackX);
+
+        // Reducir gradualmente el empuje
+        const reduction = 1000 * (delta / 1000);
+        const magnitude = Math.max(
+            0,
+            Math.abs(this.knockbackX) - reduction
+        );
+
+        this.knockbackX = Math.sign(this.knockbackX) * magnitude;
 
         // Orientación
         if (direction !== 0) {
@@ -81,6 +153,9 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
 
     // Volver a la posición inicial
     respawn() {
+
+        this.knockbackX = 0;
+        this.nextAttackAt = 0;
         this.body.reset(this.spawnX, this.spawnY);
         this.setFlipX(this.initialFacingLeft);
         this.play(`${this.robotName}-idle`);

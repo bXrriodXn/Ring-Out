@@ -93,6 +93,15 @@ class GameScene extends Phaser.Scene {
             if (event.code === this.controls.rivet.jump) {
                 this.rivet.jump();
             }
+
+            // Ataques
+            if (event.code === this.controls.bolt.attack) {
+                this.bolt.attack(this.rivet);
+            }
+
+            if (event.code === this.controls.rivet.attack) {
+                this.rivet.attack(this.bolt);
+            }
         };
 
         // Teclas soltadas
@@ -125,22 +134,12 @@ class GameScene extends Phaser.Scene {
         const b = this.controls.bolt;
         const r = this.controls.rivet;
 
-        const instructions = [
-            `BOLT: ${keyLabel(b.left)} / ${keyLabel(b.right)} | Saltar: ${keyLabel(b.jump)}`,
-            `RIVET: ${keyLabel(r.left)} / ${keyLabel(r.right)} | Saltar: ${keyLabel(r.jump)}`
-        ].join('\n');
-
-        this.add.text(480, 485, instructions, {
-            fontFamily: 'Arial',
-            fontSize: '15px',
-            color: '#aaccdd',
-            align: 'center',
-            lineSpacing: 5
-        }).setOrigin(0.5, 0);
+        
     }
 
-    update() {
-        this.bolt.updateMovement(this.keysDown);
-        this.rivet.updateMovement(this.keysDown);
+    update(time, delta) {
+    this.bolt.updateMovement(this.keysDown, delta);
+    this.rivet.updateMovement(this.keysDown, delta);
     }
+    
 }
