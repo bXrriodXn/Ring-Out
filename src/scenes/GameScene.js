@@ -10,6 +10,8 @@ class GameScene extends Phaser.Scene {
 
         // Establecemos el fondo
         this.cameras.main.setBackgroundColor('#172638');
+       
+
 
         // Título
         this.add.text(480, 55, 'ARENA DE ENTRENAMIENTO', {
@@ -285,8 +287,18 @@ class GameScene extends Phaser.Scene {
             // Comprobar final de partida
             if (winner && this.scores[winner] >= 3) {
                 this.roundMessage.setText(
-                    `¡${winner.toUpperCase()} GANA LA PARTIDA!\nVOLVER AL MENU para salir`
+                    `¡${winner.toUpperCase()} GANA LA PARTIDA!`
                 );
+
+                this.time.delayedCall(1800, () => {
+                    this.physics.resume();
+
+                    this.scene.start('ResultsScene', {
+                        winner: winner,
+                        scores: { ...this.scores }
+                    });
+                });
+
                 return;
             }
 

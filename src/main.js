@@ -25,7 +25,7 @@ const config = {
     },
 
     // El cargador de escenas va a parte
-    scene: [BootScene,MenuScene,HelpScene,SettingsScene,CreditsScene, GameScene]
+    scene: [BootScene, MenuScene, HelpScene, SettingsScene, CreditsScene, GameScene,ResultsScene]
 };
 
 const game = new Phaser.Game(config);
