@@ -31,6 +31,11 @@ class BootScene extends Phaser.Scene {
     this.load.image('botonHelp', 'assets/sprites/botonHelp.png');
     this.load.image('botonCredits', 'assets/sprites/botonCredits.png');
         
+        // Sprites de armas
+    this.load.image('weapon_gloves', 'assets/sprites/weapon_gloves.png');
+    this.load.image('weapon_sword', 'assets/sprites/weapon_sword.png');
+    this.load.image('weapon_spear', 'assets/sprites/weapon_spear.png');
+    this.load.image('weapon_hammer', 'assets/sprites/weapon_hammer.png');
 
 }
 

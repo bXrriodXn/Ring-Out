@@ -4,6 +4,9 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, name, controls, facingLeft = false) {
         super(scene, x, y, name, 0);
 
+        // La instancia de Robot se construye sin arma
+        this.weaponType = 'none';
+
         // Añadir el robot a la escena y a las físicas
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -15,8 +18,12 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.spawnY = y;
         this.initialFacingLeft = facingLeft;
 
+        // Estado del combate
+        this.knockbackX = 0;
+        this.nextAttackAt = 0;
+
         // Aspecto y cuerpo físico
-        this.setScale(1.5);
+        this.setScale(1);
         this.setFlipX(facingLeft);
         this.setCollideWorldBounds(false);
 
@@ -41,15 +48,93 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(-600);
     }
 
+
+    equipWeapon(type) {
+    if (!WEAPONS[type]) return;
+
+    this.weaponType = type;
+    }
+
+
+    attack(opponent) {
+
+    const now = this.scene.time.now;
+    const weapon = WEAPONS[this.weaponType];
+
+    if (now < this.nextAttackAt) return;
+    this.nextAttackAt = now + weapon.cooldown;
+
+    const direction = this.flipX ? -1 : 1;
+    const reach = weapon.reach;
+
+    const area = new Phaser.Geom.Rectangle(
+        direction > 0
+            ? this.body.x + this.body.width
+            : this.body.x - reach,
+        this.body.y + 10,
+        reach,
+        this.body.height - 20
+    );
+
+    const opponentArea = new Phaser.Geom.Rectangle(
+        opponent.body.x,
+        opponent.body.y,
+        opponent.body.width,
+        opponent.body.height
+    );
+
+    const hit = Phaser.Geom.Intersects.RectangleToRectangle(
+        area, opponentArea
+    );
+
+    if (hit) {
+        opponent.receiveKnockback(direction * weapon.force);
+    }
+
+    // Efecto visual del ataque
+    const effect = this.scene.add.rectangle(
+        area.centerX,
+        area.centerY,
+        area.width,
+        area.height,
+        hit ? 0xff7744 : 0xffd466,
+        0.35
+    ).setDepth(10);
+
+    this.scene.tweens.add({
+        targets: effect,
+        alpha: 0,
+        duration: 130,
+        onComplete: () => effect.destroy()
+    });
+}
+
+receiveKnockback(speed) {
+    this.knockbackX = Phaser.Math.Clamp(
+        this.knockbackX + speed,
+        -900,
+        900
+    );
+}
+
     // Actualizar movimiento y animaciones
-    updateMovement(keysDown) {
+    updateMovement(keysDown, delta)  {
         const left = keysDown.has(this.controls.left);
         const right = keysDown.has(this.controls.right);
 
         const direction = Number(right) - Number(left);
 
-        // Movimiento horizontal
-        this.setVelocityX(direction * 230);
+        // Movimiento voluntario + empuje
+        this.setVelocityX(direction * 230 + this.knockbackX);
+
+        // Reducir gradualmente el empuje
+        const reduction = 1000 * (delta / 1000);
+        const magnitude = Math.max(
+            0,
+            Math.abs(this.knockbackX) - reduction
+        );
+
+        this.knockbackX = Math.sign(this.knockbackX) * magnitude;
 
         // Orientación
         if (direction !== 0) {
@@ -73,16 +158,17 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
             this.play(animation);
         }
 
-        // Reaparición provisional tras caer de la arena
-        if (this.y > 620) {
-            this.respawn();
-        }
+        
     }
 
     // Volver a la posición inicial
     respawn() {
+
+        this.knockbackX = 0;
+        this.nextAttackAt = 0;
         this.body.reset(this.spawnX, this.spawnY);
         this.setFlipX(this.initialFacingLeft);
         this.play(`${this.robotName}-idle`);
+        this.weaponType = 'none';
     }
 }

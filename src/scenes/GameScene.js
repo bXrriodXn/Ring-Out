@@ -7,6 +7,8 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
+
+        // Establecemos el fondo
         this.cameras.main.setBackgroundColor('#172638');
 
         // Título
@@ -26,6 +28,27 @@ class GameScene extends Phaser.Scene {
         back.on('pointerover', () => back.setColor('#ffffff'));
         back.on('pointerout', () => back.setColor('#aaccdd'));
         back.on('pointerdown', () => this.scene.start('MenuScene'));
+
+        // Estado de la partida
+        this.scores = { bolt: 0, rivet: 0 };
+        this.roundNumber = 1;
+        this.roundActive = true;
+        this.weaponPickups = [];
+
+        // Marcador
+        this.scoreText = this.add.text(480, 105, 'BOLT 0 - 0 RIVET', {
+            fontFamily: 'Arial',
+            fontSize: '22px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        // Mensajes de ronda
+        this.roundMessage = this.add.text(480, 145, 'RONDA 1', {
+            fontFamily: 'Arial',
+            fontSize: '21px',
+            color: '#ffcc66',
+            align: 'center'
+        }).setOrigin(0.5);
 
         // Plataformas
         const platformData = [
@@ -56,13 +79,29 @@ class GameScene extends Phaser.Scene {
         this.controls = loadGameSettings().controls;
         this.keysDown = new Set();
 
-        // Crear personajes usando la nueva clase
+        const playerSpawns = {
+
+            bolt: { x: 300, y: 350 },
+            rivet: { x: 660, y: 350 }
+        };
+
+        // Crear personajes usando la clase Robot
         this.bolt = new Robot(
-            this, 300, 350, 'bolt', this.controls.bolt, false
+            this,
+            playerSpawns.bolt.x,
+            playerSpawns.bolt.y,
+            'bolt',
+            this.controls.bolt,
+            false
         );
 
         this.rivet = new Robot(
-            this, 660, 350, 'rivet', this.controls.rivet, true
+            this,
+            playerSpawns.rivet.x,
+            playerSpawns.rivet.y,
+            'rivet',
+            this.controls.rivet,
+            true
         );
 
         // Colisiones con las plataformas
@@ -70,6 +109,66 @@ class GameScene extends Phaser.Scene {
             this.physics.add.collider(this.bolt, platform);
             this.physics.add.collider(this.rivet, platform);
         }
+
+        
+        // Dos armas por arena
+        const weaponSpawns = [
+            { x: 280, y: 265, type: 'spear' },
+            { x: 680, y: 265, type: 'gloves' }
+        ];
+
+        // Mostrar el arma equipada por cada jugador
+        this.weaponLabels = {
+            bolt: this.add.text(90, 105, 'BOLT: Sin arma', {
+                fontFamily: 'Arial',
+                fontSize: '17px',
+                color: '#38caff'
+            }),
+
+            rivet: this.add.text(690, 105, 'RIVET: Sin arma', {
+                fontFamily: 'Arial',
+                fontSize: '17px',
+                color: '#ff5577'
+            })
+        };
+
+        // Recogida automática
+        const collectWeapon = (robot, pickup) => {
+            if (!pickup.active) return;
+
+            robot.equipWeapon(pickup.weaponType);
+
+            this.weaponLabels[robot.robotName].setText(
+                `${robot.robotName.toUpperCase()}: ${WEAPONS[robot.weaponType].label}`
+            );
+
+            // Desaparece y no puede volver a recogerse
+            pickup.disableBody(true, true);
+        };
+
+        // Crear las armas en la arena
+        for (const spawn of weaponSpawns) {
+            const pickup = this.physics.add.staticImage(
+                spawn.x,
+                spawn.y,
+                `weapon_${spawn.type}`
+            );
+
+            pickup.setScale(1);
+            pickup.refreshBody();
+            pickup.weaponType = spawn.type;
+            this.weaponPickups.push(pickup);
+
+            // Detectar contacto de cada robot con el arma
+            this.physics.add.overlap(this.bolt, pickup, () => {
+                collectWeapon(this.bolt, pickup);
+            });
+
+            this.physics.add.overlap(this.rivet, pickup, () => {
+                collectWeapon(this.rivet, pickup);
+            });
+        }
+
 
         // Teclas utilizadas por los jugadores
         const usedKeys = new Set([
@@ -79,6 +178,8 @@ class GameScene extends Phaser.Scene {
 
         // Teclas pulsadas
         const onKeyDown = (event) => {
+
+            if (!this.roundActive) return;
             if (!usedKeys.has(event.code)) return;
 
             event.preventDefault();
@@ -92,6 +193,15 @@ class GameScene extends Phaser.Scene {
 
             if (event.code === this.controls.rivet.jump) {
                 this.rivet.jump();
+            }
+
+            // Ataques
+            if (event.code === this.controls.bolt.attack) {
+                this.bolt.attack(this.rivet);
+            }
+
+            if (event.code === this.controls.rivet.attack) {
+                this.rivet.attack(this.bolt);
             }
         };
 
@@ -125,22 +235,103 @@ class GameScene extends Phaser.Scene {
         const b = this.controls.bolt;
         const r = this.controls.rivet;
 
-        const instructions = [
-            `BOLT: ${keyLabel(b.left)} / ${keyLabel(b.right)} | Saltar: ${keyLabel(b.jump)}`,
-            `RIVET: ${keyLabel(r.left)} / ${keyLabel(r.right)} | Saltar: ${keyLabel(r.jump)}`
-        ].join('\n');
-
-        this.add.text(480, 485, instructions, {
-            fontFamily: 'Arial',
-            fontSize: '15px',
-            color: '#aaccdd',
-            align: 'center',
-            lineSpacing: 5
-        }).setOrigin(0.5, 0);
+        
     }
 
-    update() {
-        this.bolt.updateMovement(this.keysDown);
-        this.rivet.updateMovement(this.keysDown);
+
+    update(time, delta) {
+        if (!this.roundActive) return;
+
+        this.bolt.updateMovement(this.keysDown, delta);
+        this.rivet.updateMovement(this.keysDown, delta);
+
+        // Comprobar caídas
+        const boltOut = this.bolt.y > 620;
+        const rivetOut = this.rivet.y > 620;
+
+        if (boltOut && rivetOut) {
+            this.finishRound(null);
+        } else if (boltOut) {
+            this.finishRound('rivet');
+        } else if (rivetOut) {
+            this.finishRound('bolt');
+        }
     }
+
+
+        finishRound(winner) {
+            if (!this.roundActive) return;
+
+            this.roundActive = false;
+            this.keysDown.clear();
+            this.physics.pause();
+
+            if (winner) {
+                this.scores[winner]++;
+
+                const loser = winner === 'bolt' ? 'rivet' : 'bolt';
+                const robot = loser === 'bolt' ? this.bolt : this.rivet;
+
+                robot.play(`${loser}-death`);
+            } else {
+                this.bolt.play('bolt-death');
+                this.rivet.play('rivet-death');
+            }
+
+            this.scoreText.setText(
+                `BOLT ${this.scores.bolt} - ${this.scores.rivet} RIVET`
+            );
+
+            // Comprobar final de partida
+            if (winner && this.scores[winner] >= 3) {
+                this.roundMessage.setText(
+                    `¡${winner.toUpperCase()} GANA LA PARTIDA!\nVOLVER AL MENU para salir`
+                );
+                return;
+            }
+
+            this.roundMessage.setText(
+                winner
+                    ? `¡RONDA PARA ${winner.toUpperCase()}!`
+                    : '¡EMPATE! SE REPITE LA RONDA'
+            );
+
+            // Preparar siguiente ronda
+            this.time.delayedCall(1800, () => {
+                this.startNextRound(winner !== null);
+            });
+        }
+
+
+
+        startNextRound(advanceNumber) {
+
+            // Si hubo empate, repetimos el número de ronda
+            if (advanceNumber) {
+                this.roundNumber++;
+            }
+
+            // Restaurar jugadores
+            this.bolt.respawn();
+            this.rivet.respawn();
+
+            // Restaurar armas recogidas
+            for (const pickup of this.weaponPickups) {
+                if (!pickup.active) {
+                    pickup.enableBody(true, pickup.x, pickup.y, true, true);
+                }
+            }
+
+            // Actualizar indicadores de armas
+            this.weaponLabels.bolt.setText('BOLT: Sin arma');
+            this.weaponLabels.rivet.setText('RIVET: Sin arma');
+
+            // Actualizar ronda
+            this.roundMessage.setText(`RONDA ${this.roundNumber}`);
+
+            this.keysDown.clear();
+            this.physics.resume();
+            this.roundActive = true;
+        }
+
 }
