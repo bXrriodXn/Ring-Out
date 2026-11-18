@@ -37,6 +37,25 @@ class GameScene extends Phaser.Scene {
         this.roundActive = true;
         this.weaponPickups = [];
 
+
+        // Marcadores visuales de rondas
+        this.roundMarkers = {
+            bolt: [],
+            rivet: []
+        };
+
+        for (let i = 0; i < 3; i++) {
+            // Bolt: izquierda
+            const blueMarker = this.add.sprite(75 + i * 46, 155, 'roundMarkers', 0);
+            blueMarker.setScale(1.5);
+            this.roundMarkers.bolt.push(blueMarker);
+
+            // Rivet: derecha
+            const redMarker = this.add.sprite(885 - i * 46, 155, 'roundMarkers', 0);
+            redMarker.setScale(1.5);
+            this.roundMarkers.rivet.push(redMarker);
+        }
+
         // Marcador
         this.scoreText = this.add.text(480, 105, 'BOLT 0 - 0 RIVET', {
             fontFamily: 'Arial',
@@ -260,6 +279,25 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+    // Método de actualización
+
+    //Si Bolt tiene dos victorias, 
+    //los indicadores con índice 0 y 1 
+    //mostrarán el fotograma azul. El tercero seguirá vacío.
+
+    // Si Rivet tiene una victoria, 
+    //solo su primer indicador mostrará el fotograma rojo.
+
+    updateRoundMarkers() {
+        this.roundMarkers.bolt.forEach((marker, index) => {
+            marker.setFrame(index < this.scores.bolt ? 1 : 0);
+        });
+
+        this.roundMarkers.rivet.forEach((marker, index) => {
+            marker.setFrame(index < this.scores.rivet ? 2 : 0);
+        });
+    }
+
 
         finishRound(winner) {
             if (!this.roundActive) return;
@@ -283,6 +321,9 @@ class GameScene extends Phaser.Scene {
             this.scoreText.setText(
                 `BOLT ${this.scores.bolt} - ${this.scores.rivet} RIVET`
             );
+
+            // Actualizar indicadores visuales
+            this.updateRoundMarkers();
 
             // Comprobar final de partida
             if (winner && this.scores[winner] >= 3) {

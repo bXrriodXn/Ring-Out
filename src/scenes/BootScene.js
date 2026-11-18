@@ -37,6 +37,11 @@ class BootScene extends Phaser.Scene {
     this.load.image('weapon_spear', 'assets/sprites/weapon_spear.png');
     this.load.image('weapon_hammer', 'assets/sprites/weapon_hammer.png');
 
+        this.load.spritesheet('roundMarkers', 'assets/sprites/rondas_spritesheet.png', {
+            frameWidth: 32,
+            frameHeight: 32
+        });
+
 }
 
 
