@@ -56,13 +56,29 @@ class GameScene extends Phaser.Scene {
         this.controls = loadGameSettings().controls;
         this.keysDown = new Set();
 
-        // Crear personajes usando la nueva clase
+        const playerSpawns = {
+
+            bolt: { x: 300, y: 350 },
+            rivet: { x: 660, y: 350 }
+        };
+
+        // Crear personajes usando la clase Robot
         this.bolt = new Robot(
-            this, 300, 350, 'bolt', this.controls.bolt, false
+            this,
+            playerSpawns.bolt.x,
+            playerSpawns.bolt.y,
+            'bolt',
+            this.controls.bolt,
+            false
         );
 
         this.rivet = new Robot(
-            this, 660, 350, 'rivet', this.controls.rivet, true
+            this,
+            playerSpawns.rivet.x,
+            playerSpawns.rivet.y,
+            'rivet',
+            this.controls.rivet,
+            true
         );
 
         // Colisiones con las plataformas
@@ -70,6 +86,65 @@ class GameScene extends Phaser.Scene {
             this.physics.add.collider(this.bolt, platform);
             this.physics.add.collider(this.rivet, platform);
         }
+
+        
+        // Dos armas por arena, como indica el GDD
+        const weaponSpawns = [
+            { x: 280, y: 265, type: 'spear' },
+            { x: 680, y: 265, type: 'hammer' }
+        ];
+
+        // Mostrar el arma equipada por cada jugador
+        const weaponLabels = {
+            bolt: this.add.text(90, 105, 'BOLT: Sin arma', {
+                fontFamily: 'Arial',
+                fontSize: '17px',
+                color: '#38caff'
+            }),
+
+            rivet: this.add.text(690, 105, 'RIVET: Sin arma', {
+                fontFamily: 'Arial',
+                fontSize: '17px',
+                color: '#ff5577'
+            })
+        };
+
+        // Recogida automática
+        const collectWeapon = (robot, pickup) => {
+            if (!pickup.active) return;
+
+            robot.equipWeapon(pickup.weaponType);
+
+            weaponLabels[robot.robotName].setText(
+                `${robot.robotName.toUpperCase()}: ${WEAPONS[robot.weaponType].label}`
+            );
+
+            // Desaparece y no puede volver a recogerse
+            pickup.disableBody(true, true);
+        };
+
+        // Crear las armas en la arena
+        for (const spawn of weaponSpawns) {
+            const pickup = this.physics.add.staticImage(
+                spawn.x,
+                spawn.y,
+                `weapon_${spawn.type}`
+            );
+
+            pickup.setScale(1.5);
+            pickup.refreshBody();
+            pickup.weaponType = spawn.type;
+
+            // Detectar contacto de cada robot con el arma
+            this.physics.add.overlap(this.bolt, pickup, () => {
+                collectWeapon(this.bolt, pickup);
+            });
+
+            this.physics.add.overlap(this.rivet, pickup, () => {
+                collectWeapon(this.rivet, pickup);
+            });
+        }
+
 
         // Teclas utilizadas por los jugadores
         const usedKeys = new Set([

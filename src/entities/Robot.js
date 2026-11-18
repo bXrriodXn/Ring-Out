@@ -4,6 +4,9 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, name, controls, facingLeft = false) {
         super(scene, x, y, name, 0);
 
+        // La instancia de Robot se construye sin arma
+        this.weaponType = 'none';
+
         // Añadir el robot a la escena y a las físicas
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -45,14 +48,24 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(-600);
     }
 
+
+    equipWeapon(type) {
+    if (!WEAPONS[type]) return;
+
+    this.weaponType = type;
+    }
+
+
     attack(opponent) {
+
     const now = this.scene.time.now;
+    const weapon = WEAPONS[this.weaponType];
 
     if (now < this.nextAttackAt) return;
-    this.nextAttackAt = now + 350;
+    this.nextAttackAt = now + weapon.cooldown;
 
     const direction = this.flipX ? -1 : 1;
-    const reach = 70;
+    const reach = weapon.reach;
 
     const area = new Phaser.Geom.Rectangle(
         direction > 0
@@ -75,7 +88,7 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
     );
 
     if (hit) {
-        opponent.receiveKnockback(direction * 560);
+        opponent.receiveKnockback(direction * weapon.force);
     }
 
     // Efecto visual del ataque
