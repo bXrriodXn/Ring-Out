@@ -14,7 +14,7 @@ class GameScene extends Phaser.Scene {
 
 
         // Título
-        this.add.text(480, 55, 'ARENA DE ENTRENAMIENTO', {
+        this.arenaNameText = this.add.text(480, 55, 'ARENA', {
             fontFamily: 'Arial',
             fontSize: '28px',
             color: '#ffffff'
@@ -37,6 +37,14 @@ class GameScene extends Phaser.Scene {
         this.roundActive = true;
         this.weaponPickups = [];
 
+        // Orden aleatorio de arenas
+        this.arenaOrder = Phaser.Utils.Array.Shuffle([...ARENAS]);
+        this.arenaIndex = 0;
+        this.currentArena = null;
+
+        // Elementos que cambian entre arenas
+        this.arenaPlatforms = [];
+        this.arenaColliders = [];
 
         // Marcadores visuales de rondas
         this.roundMarkers = {
@@ -71,40 +79,12 @@ class GameScene extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.5);
 
-        // Plataformas
-        const platformData = [
-            { x: 480, y: 445, width: 680, height: 24 },
-            { x: 280, y: 310, width: 200, height: 18 },
-            { x: 680, y: 310, width: 200, height: 18 }
-        ];
-
-        const platforms = [];
-
-        for (const data of platformData) {
-            const platform = this.add.rectangle(
-                data.x, data.y, data.width, data.height, 0x466478
-            ).setStrokeStyle(2, 0x80c9eb);
-
-            this.physics.add.existing(platform, true);
-            platform.body.updateFromGameObject();
-
-            // Colisión solamente desde arriba
-            platform.body.checkCollision.down = false;
-            platform.body.checkCollision.left = false;
-            platform.body.checkCollision.right = false;
-
-            platforms.push(platform);
-        }
-
+     
         // Controles configurados
         this.controls = loadGameSettings().controls;
         this.keysDown = new Set();
 
-        const playerSpawns = {
-
-            bolt: { x: 300, y: 350 },
-            rivet: { x: 660, y: 350 }
-        };
+        const playerSpawns = this.arenaOrder[0].playerSpawns;
 
         // Crear personajes usando la clase Robot
         this.bolt = new Robot(
@@ -125,18 +105,9 @@ class GameScene extends Phaser.Scene {
             true
         );
 
-        // Colisiones con las plataformas
-        for (const platform of platforms) {
-            this.physics.add.collider(this.bolt, platform);
-            this.physics.add.collider(this.rivet, platform);
-        }
-
         
-        // Dos armas por arena
-        const weaponSpawns = [
-            { x: 280, y: 265, type: 'spear' },
-            { x: 680, y: 265, type: 'gloves' }
-        ];
+        
+       
 
         // Mostrar el arma equipada por cada jugador
         this.weaponLabels = {
@@ -153,42 +124,8 @@ class GameScene extends Phaser.Scene {
             })
         };
 
-        // Recogida automática
-        const collectWeapon = (robot, pickup) => {
-            if (!pickup.active) return;
-
-            robot.equipWeapon(pickup.weaponType);
-
-            this.weaponLabels[robot.robotName].setText(
-                `${robot.robotName.toUpperCase()}: ${WEAPONS[robot.weaponType].label}`
-            );
-
-            // Desaparece y no puede volver a recogerse
-            pickup.disableBody(true, true);
-        };
-
-        // Crear las armas en la arena
-        for (const spawn of weaponSpawns) {
-            const pickup = this.physics.add.staticImage(
-                spawn.x,
-                spawn.y,
-                `weapon_${spawn.type}`
-            );
-
-            pickup.setScale(1);
-            pickup.refreshBody();
-            pickup.weaponType = spawn.type;
-            this.weaponPickups.push(pickup);
-
-            // Detectar contacto de cada robot con el arma
-            this.physics.add.overlap(this.bolt, pickup, () => {
-                collectWeapon(this.bolt, pickup);
-            });
-
-            this.physics.add.overlap(this.rivet, pickup, () => {
-                collectWeapon(this.rivet, pickup);
-            });
-        }
+        // Construir la primera arena
+        this.buildArena(this.arenaOrder[this.arenaIndex]);
 
 
         // Teclas utilizadas por los jugadores
@@ -256,7 +193,94 @@ class GameScene extends Phaser.Scene {
         const b = this.controls.bolt;
         const r = this.controls.rivet;
 
+
         
+    }
+
+
+
+    buildArena(arena) {
+        // Eliminar colisiones y objetos de la arena anterior
+        this.arenaColliders.forEach(collider => collider.destroy());
+        this.arenaPlatforms.forEach(platform => platform.destroy());
+        this.weaponPickups.forEach(pickup => pickup.destroy());
+
+        this.arenaColliders = [];
+        this.arenaPlatforms = [];
+        this.weaponPickups = [];
+
+        this.currentArena = arena;
+        this.arenaNameText.setText(arena.name);
+
+        // Crear plataformas
+        for (const data of arena.platforms) {
+            const platform = this.add.rectangle(
+                data.x, data.y, data.width, data.height, 0x466478
+            ).setStrokeStyle(2, 0x80c9eb).setDepth(-1);
+
+            this.physics.add.existing(platform, true);
+            platform.body.updateFromGameObject();
+
+            platform.body.checkCollision.down = false;
+            platform.body.checkCollision.left = false;
+            platform.body.checkCollision.right = false;
+
+            this.arenaPlatforms.push(platform);
+
+            this.arenaColliders.push(
+                this.physics.add.collider(this.bolt, platform)
+            );
+
+            this.arenaColliders.push(
+                this.physics.add.collider(this.rivet, platform)
+            );
+        }
+
+        // Actualizar posiciones iniciales
+        this.bolt.spawnX = arena.playerSpawns.bolt.x;
+        this.bolt.spawnY = arena.playerSpawns.bolt.y;
+
+        this.rivet.spawnX = arena.playerSpawns.rivet.x;
+        this.rivet.spawnY = arena.playerSpawns.rivet.y;
+
+        this.bolt.respawn();
+        this.rivet.respawn();
+
+        // Crear las dos armas de la arena
+        for (const spawn of arena.weaponSpawns) {
+            const pickup = this.physics.add.staticImage(
+                spawn.x, spawn.y, `weapon_${spawn.type}`
+            );
+
+            pickup.setScale(1.5);
+            pickup.refreshBody();
+            pickup.weaponType = spawn.type;
+
+            const collect = (robot) => {
+                if (!this.roundActive || !pickup.active) return;
+
+                robot.equipWeapon(pickup.weaponType);
+
+                this.weaponLabels[robot.robotName].setText(
+                    `${robot.robotName.toUpperCase()}: ${WEAPONS[robot.weaponType].label}`
+                );
+
+                pickup.disableBody(true, true);
+            };
+
+            this.arenaColliders.push(
+                this.physics.add.overlap(this.bolt, pickup, () => collect(this.bolt))
+            );
+
+            this.arenaColliders.push(
+                this.physics.add.overlap(this.rivet, pickup, () => collect(this.rivet))
+            );
+
+            this.weaponPickups.push(pickup);
+        }
+
+        this.weaponLabels.bolt.setText('BOLT: Sin arma');
+        this.weaponLabels.rivet.setText('RIVET: Sin arma');
     }
 
 
@@ -267,8 +291,9 @@ class GameScene extends Phaser.Scene {
         this.rivet.updateMovement(this.keysDown, delta);
 
         // Comprobar caídas
-        const boltOut = this.bolt.y > 620;
-        const rivetOut = this.rivet.y > 620;
+        
+        const boltOut = this.bolt.y > this.currentArena.fallLimit;
+        const rivetOut = this.rivet.y > this.currentArena.fallLimit;
 
         if (boltOut && rivetOut) {
             this.finishRound(null);
@@ -357,34 +382,29 @@ class GameScene extends Phaser.Scene {
 
 
 
-        startNextRound(advanceNumber) {
 
-            // Si hubo empate, repetimos el número de ronda
-            if (advanceNumber) {
-                this.roundNumber++;
+    startNextRound(advanceNumber) {
+
+        if (advanceNumber) {
+            this.roundNumber++;
+            this.arenaIndex++;
+
+            // Al terminar el ciclo, volver a mezclar las arenas
+            if (this.arenaIndex >= this.arenaOrder.length) {
+                this.arenaOrder = Phaser.Utils.Array.Shuffle([...ARENAS]);
+                this.arenaIndex = 0;
             }
-
-            // Restaurar jugadores
-            this.bolt.respawn();
-            this.rivet.respawn();
-
-            // Restaurar armas recogidas
-            for (const pickup of this.weaponPickups) {
-                if (!pickup.active) {
-                    pickup.enableBody(true, pickup.x, pickup.y, true, true);
-                }
-            }
-
-            // Actualizar indicadores de armas
-            this.weaponLabels.bolt.setText('BOLT: Sin arma');
-            this.weaponLabels.rivet.setText('RIVET: Sin arma');
-
-            // Actualizar ronda
-            this.roundMessage.setText(`RONDA ${this.roundNumber}`);
-
-            this.keysDown.clear();
-            this.physics.resume();
-            this.roundActive = true;
         }
+
+        // Reconstruir la arena y reiniciar los personajes
+        this.buildArena(this.arenaOrder[this.arenaIndex]);
+
+        this.roundMessage.setText(`RONDA ${this.roundNumber}`);
+
+        this.keysDown.clear();
+        this.physics.resume();
+        this.roundActive = true;
+    }
+
 
 }
