@@ -42,5 +42,11 @@ const ARENAS = [
             { x: 350, y: 390, type: 'sword' },
             { x: 610, y: 390, type: 'spear' }
         ]
+
+        spikes: [
+            { x: 480, y: 421, width: 112, height: 24 },
+            { x: 347, y: 289, width: 32, height: 24 },
+            { x: 613, y: 289, width: 32, height: 24 }
+        ]
     }
 ];
