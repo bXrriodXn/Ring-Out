@@ -20,6 +20,12 @@ const ARENAS = [
             { x: 280, y: 265, type: 'gloves' },
             { x: 680, y: 265, type: 'hammer' }
         ]
+
+        spikes: [
+            { x: 480, y: 421, width: 112, height: 24 },
+            { x: 347, y: 289, width: 32, height: 24 },
+            { x: 613, y: 289, width: 32, height: 24 }
+        ]
     },
 
     {
