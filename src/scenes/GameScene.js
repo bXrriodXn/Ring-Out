@@ -45,6 +45,8 @@ class GameScene extends Phaser.Scene {
         // Elementos que cambian entre arenas
         this.arenaPlatforms = [];
         this.arenaColliders = [];
+        this.arenaHazards = [];
+        this.hazardHits = { bolt: false, rivet: false };
 
         // Marcadores visuales de rondas
         this.roundMarkers = {
@@ -126,6 +128,16 @@ class GameScene extends Phaser.Scene {
 
         // Construir la primera arena
         this.buildArena(this.arenaOrder[this.arenaIndex]);
+
+
+        // Limpiar los pinchos anteriores
+        this.arenaHazards.forEach(hazard => {
+            hazard.visual.destroy();
+            hazard.sensor.destroy();
+        });
+
+        this.arenaHazards = [];
+        this.hazardHits = { bolt: false, rivet: false };
 
 
         // Teclas utilizadas por los jugadores
@@ -236,6 +248,54 @@ class GameScene extends Phaser.Scene {
             );
         }
 
+
+        // Crear los pinchos de la arena
+        for (const spike of (arena.spikes || [])) {
+
+            // Representación visual
+            const visual = this.add.graphics().setDepth(-0.5);
+            visual.fillStyle(0xff4f5e, 1);
+
+            const left = spike.x - spike.width / 2;
+            const bottom = spike.y + spike.height / 2;
+
+            for (let x = left; x < left + spike.width; x += 16) {
+                visual.fillTriangle(
+                    x, bottom,
+                    Math.min(x + 8, left + spike.width),
+                    bottom - spike.height,
+                    Math.min(x + 16, left + spike.width),
+                    bottom
+                );
+            }
+
+            // Zona de detección invisible
+            const sensor = this.add.zone(
+                spike.x, spike.y, spike.width, spike.height
+            );
+
+            this.physics.add.existing(sensor, true);
+            sensor.body.updateFromGameObject();
+
+            // Registrar el contacto de cada jugador
+            for (const robot of [this.bolt, this.rivet]) {
+                const overlap = this.physics.add.overlap(
+                    robot,
+                    sensor,
+                    () => {
+                        if (this.roundActive) {
+                            this.hazardHits[robot.robotName] = true;
+                        }
+                    }
+                );
+
+                this.arenaColliders.push(overlap);
+            }
+
+            this.arenaHazards.push({ visual, sensor });
+        }
+
+
         // Actualizar posiciones iniciales
         this.bolt.spawnX = arena.playerSpawns.bolt.x;
         this.bolt.spawnY = arena.playerSpawns.bolt.y;
@@ -290,10 +350,17 @@ class GameScene extends Phaser.Scene {
         this.bolt.updateMovement(this.keysDown, delta);
         this.rivet.updateMovement(this.keysDown, delta);
 
-        // Comprobar caídas
+
+        //Detectamos derrota
+        // Comprobar caídas o pinchos tocados
         
-        const boltOut = this.bolt.y > this.currentArena.fallLimit;
-        const rivetOut = this.rivet.y > this.currentArena.fallLimit;
+        const boltOut =
+            this.bolt.y > this.currentArena.fallLimit ||
+            this.hazardHits.bolt;
+
+        const rivetOut =
+            this.rivet.y > this.currentArena.fallLimit ||
+            this.hazardHits.rivet;
 
         if (boltOut && rivetOut) {
             this.finishRound(null);

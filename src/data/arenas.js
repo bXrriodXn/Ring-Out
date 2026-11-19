@@ -21,11 +21,7 @@ const ARENAS = [
             { x: 680, y: 265, type: 'hammer' }
         ]
 
-        spikes: [
-            { x: 480, y: 421, width: 112, height: 24 },
-            { x: 347, y: 289, width: 32, height: 24 },
-            { x: 613, y: 289, width: 32, height: 24 }
-        ]
+        
     },
 
     {
@@ -47,12 +43,11 @@ const ARENAS = [
         weaponSpawns: [
             { x: 350, y: 390, type: 'sword' },
             { x: 610, y: 390, type: 'spear' }
-        ]
+        ],
 
         spikes: [
-            { x: 480, y: 421, width: 112, height: 24 },
-            { x: 347, y: 289, width: 32, height: 24 },
-            { x: 613, y: 289, width: 32, height: 24 }
+            { x: 480, y: 527, width: 1008, height: 24 }
+            
         ]
     }
 ];
