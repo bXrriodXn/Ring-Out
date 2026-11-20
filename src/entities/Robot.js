@@ -22,6 +22,14 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.knockbackX = 0;
         this.nextAttackAt = 0;
 
+        this.isHurt = false;
+
+        this.on('animationcomplete', (animation) => {
+            if (animation.key === `${this.robotName}-hurt`) {
+                this.isHurt = false;
+            }
+        });
+
         // Aspecto y cuerpo físico
         this.setScale(1);
         this.setFlipX(facingLeft);
@@ -109,13 +117,18 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
     });
 }
 
-receiveKnockback(speed) {
-    this.knockbackX = Phaser.Math.Clamp(
-        this.knockbackX + speed,
-        -900,
-        900
-    );
-}
+    receiveKnockback(speed) {
+        this.knockbackX = Phaser.Math.Clamp(
+            this.knockbackX + speed,
+            -900,
+            900
+        );
+
+        // Cada golpe acertado activará
+        // la animación correspondiente al robot.
+        this.isHurt = true;
+        this.play(`${this.robotName}-hurt`);
+    }
 
     // Actualizar movimiento y animaciones
     updateMovement(keysDown, delta)  {
@@ -154,7 +167,14 @@ receiveKnockback(speed) {
             animation = `${this.robotName}-idle`;
         }
 
-        if (this.anims.currentAnim?.key !== animation) {
+        // Así, mientras isHurt sea true, 
+        // las animaciones normales no interrumpirán el golpe.
+
+        // Cuando hurt termine, el evento
+        // animationcomplete pondrá isHurt
+        //en false y se recuperará idle, walk, rise o fall.
+
+        if (!this.isHurt && this.anims.currentAnim?.key !== animation) {
             this.play(animation);
         }
 
@@ -170,5 +190,6 @@ receiveKnockback(speed) {
         this.setFlipX(this.initialFacingLeft);
         this.play(`${this.robotName}-idle`);
         this.weaponType = 'none';
+        this.isHurt = false;
     }
 }
