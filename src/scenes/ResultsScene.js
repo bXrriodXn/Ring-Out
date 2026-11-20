@@ -26,7 +26,7 @@ class ResultsScene extends Phaser.Scene {
             .setStrokeStyle(2, 0x5aa5ce);
 
         // Ganador
-        this.add.text(centerX, 195, `¡VICTORIA DE ${this.winner.toUpperCase()}!`, {
+        this.add.text(centerX, 195, `VICTORIA DE ${this.winner.toUpperCase()}`, {
             fontFamily: 'Arial',
             fontSize: '30px',
             color: winnerColor,

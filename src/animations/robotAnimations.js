@@ -7,7 +7,7 @@ const ROBOT_ANIMATIONS = {
     jump:  { start: 16, end: 23, fps: 10, repeat: 0 },
     rise:  { start: 16, end: 19, fps: 10, repeat: 0 },
     fall:  { start: 20, end: 23, fps: 10, repeat: 0 },
-    hurt:  { start: 24, end: 27, fps: 15, repeat: 0 },
+    hurt:  { start: 24, end: 27, fps: 8, repeat: 0 },
     death: { start: 32, end: 39, fps: 10, repeat: 0 }
 };
 

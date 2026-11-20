@@ -124,6 +124,10 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
             900
         );
 
+        // Mirar hacia el lado del que viene el golpe
+        this.setFlipX(speed > 0);
+
+
         // Cada golpe acertado activará
         // la animación correspondiente al robot.
         this.isHurt = true;
@@ -150,7 +154,7 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
         this.knockbackX = Math.sign(this.knockbackX) * magnitude;
 
         // Orientación
-        if (direction !== 0) {
+        if (direction !== 0 && !this.isHurt) {
             this.setFlipX(direction < 0);
         }
 
