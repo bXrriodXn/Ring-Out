@@ -107,10 +107,8 @@ class GameScene extends Phaser.Scene {
             true
         );
 
-        
-        
+               
        
-
         // Mostrar el arma equipada por cada jugador
         this.weaponLabels = {
             bolt: this.add.text(90, 105, 'BOLT: Sin arma', {
@@ -128,17 +126,7 @@ class GameScene extends Phaser.Scene {
 
         // Construir la primera arena
         this.buildArena(this.arenaOrder[this.arenaIndex]);
-
-
-        // Limpiar los pinchos anteriores
-        this.arenaHazards.forEach(hazard => {
-            hazard.visual.destroy();
-            hazard.sensor.destroy();
-        });
-
-        this.arenaHazards = [];
-        this.hazardHits = { bolt: false, rivet: false };
-
+         
 
         // Teclas utilizadas por los jugadores
         const usedKeys = new Set([
@@ -212,14 +200,24 @@ class GameScene extends Phaser.Scene {
 
 
     buildArena(arena) {
+
         // Eliminar colisiones y objetos de la arena anterior
         this.arenaColliders.forEach(collider => collider.destroy());
         this.arenaPlatforms.forEach(platform => platform.destroy());
         this.weaponPickups.forEach(pickup => pickup.destroy());
 
+        // Limpiar los pinchos anteriores
+        this.arenaHazards.forEach(hazard => {
+            hazard.visual.destroy();
+            hazard.sensor.destroy();
+        });
+
+        this.arenaHazards = [];        
         this.arenaColliders = [];
         this.arenaPlatforms = [];
         this.weaponPickups = [];
+
+        this.hazardHits = { bolt: false, rivet: false };
 
         this.currentArena = arena;
         this.arenaNameText.setText(arena.name);
@@ -247,7 +245,6 @@ class GameScene extends Phaser.Scene {
                 this.physics.add.collider(this.rivet, platform)
             );
         }
-
 
         // Crear los pinchos de la arena
         for (const spike of (arena.spikes || [])) {
@@ -294,7 +291,6 @@ class GameScene extends Phaser.Scene {
 
             this.arenaHazards.push({ visual, sensor });
         }
-
 
         // Actualizar posiciones iniciales
         this.bolt.spawnX = arena.playerSpawns.bolt.x;
