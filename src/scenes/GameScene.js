@@ -332,15 +332,26 @@ class GameScene extends Phaser.Scene {
         this.bolt.respawn();
         this.rivet.respawn();
 
-        // Crear las dos armas de la arena
-        for (const spawn of arena.weaponSpawns) {
+        // Elegir dos armas aleatorias sin repetir
+        const weaponTypes = Phaser.Utils.Array.Shuffle([
+            'gloves',
+            'sword',
+            'spear',
+            'hammer'
+        ]);
+
+        // Crear las armas en las posiciones de la arena
+        for (const [index, spawn] of arena.weaponSpawns.entries()) {
+            const type = weaponTypes[index];
+
+
             const pickup = this.physics.add.staticImage(
-                spawn.x, spawn.y, `weapon_${spawn.type}`
+                spawn.x, spawn.y, `weapon_${type}`
             );
 
-            pickup.setScale(1.5);
+            pickup.setScale(1);
             pickup.refreshBody();
-            pickup.weaponType = spawn.type;
+            pickup.weaponType = type;
 
             const collect = (robot) => {
             if (!this.roundActive || !pickup.active) return;

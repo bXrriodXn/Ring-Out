@@ -18,8 +18,8 @@ const ARENAS = [
         ],
 
         weaponSpawns: [
-            { x: 280, y: 265, type: 'gloves' },
-            { x: 680, y: 265, type: 'hammer' }
+            { x: 280, y: 265 },
+            { x: 680, y: 265 }
         ]
 
         
@@ -59,8 +59,8 @@ const ARENAS = [
         ],
 
         weaponSpawns: [
-            { x: 450, y: 150, type: 'sword' },
-            { x: 500, y: 150, type: 'spear' }
+            { x: 450, y: 150},
+            { x: 500, y: 150}
         ],
 
         spikes: [
