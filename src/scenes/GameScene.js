@@ -11,8 +11,6 @@ class GameScene extends Phaser.Scene {
         // Establecemos el fondo
         this.cameras.main.setBackgroundColor('#172638');
        
-
-
         // Título
         this.arenaNameText = this.add.text(480, 55, 'ARENA', {
             fontFamily: 'Arial',
@@ -20,16 +18,7 @@ class GameScene extends Phaser.Scene {
             color: '#ffffff'
         }).setOrigin(0.5);
 
-        // Volver al menú
-        const back = this.add.text(25, 20, 'VOLVER AL MENU', {
-            fontFamily: 'Arial',
-            fontSize: '16px',
-            color: '#aaccdd'
-        }).setInteractive({ useHandCursor: true });
 
-        back.on('pointerover', () => back.setColor('#ffffff'));
-        back.on('pointerout', () => back.setColor('#aaccdd'));
-        back.on('pointerdown', () => this.scene.start('MenuScene'));
 
         // Estado de la partida
         this.scores = { bolt: 0, rivet: 0 };
@@ -66,15 +55,8 @@ class GameScene extends Phaser.Scene {
             this.roundMarkers.rivet.push(redMarker);
         }
 
-        // Marcador
-        this.scoreText = this.add.text(480, 105, 'BOLT 0 - 0 RIVET', {
-            fontFamily: 'Arial',
-            fontSize: '22px',
-            color: '#ffffff'
-        }).setOrigin(0.5);
-
         // Mensajes de ronda
-        this.roundMessage = this.add.text(480, 145, 'RONDA 1', {
+        this.roundMessage = this.add.text(480, 20, 'RONDA 1', {
             fontFamily: 'Arial',
             fontSize: '21px',
             color: '#ffcc66',
@@ -107,8 +89,7 @@ class GameScene extends Phaser.Scene {
             true
         );
 
-               
-       
+                      
         // Mostrar el arma equipada por cada jugador
         this.weaponLabels = {
             bolt: this.add.text(90, 105, 'BOLT: Sin arma', {
@@ -135,16 +116,29 @@ class GameScene extends Phaser.Scene {
         ]);
 
         // Teclas pulsadas
+ 
         const onKeyDown = (event) => {
-
-            if (!this.roundActive) return;
             if (!usedKeys.has(event.code)) return;
 
             event.preventDefault();
-            this.keysDown.add(event.code);
-
             if (event.repeat) return;
 
+            // Pausa de cada jugador
+            if (event.code === this.controls.bolt.pause) {
+                this.pauseGame('bolt');
+                return;
+            }
+
+            if (event.code === this.controls.rivet.pause) {
+                this.pauseGame('rivet');
+                return;
+            }
+
+            if (!this.roundActive) return;
+
+            this.keysDown.add(event.code);
+
+            // Saltos
             if (event.code === this.controls.bolt.jump) {
                 this.bolt.jump();
             }
@@ -162,6 +156,7 @@ class GameScene extends Phaser.Scene {
                 this.rivet.attack(this.bolt);
             }
         };
+
 
         // Teclas soltadas
         const onKeyUp = (event) => {
@@ -196,7 +191,6 @@ class GameScene extends Phaser.Scene {
 
         
     }
-
 
 
     buildArena(arena) {
@@ -339,6 +333,20 @@ class GameScene extends Phaser.Scene {
         this.weaponLabels.rivet.setText('RIVET: Sin arma');
     }
 
+    // La escena de pausa recibe dos datos: 
+    // quién la ha iniciado y qué tecla permite reanudar.
+
+    pauseGame(player) {
+        if (this.scene.isActive('PauseScene')) return;
+
+        this.keysDown.clear();
+
+        this.scene.pause();
+        this.scene.launch('PauseScene', {
+            owner: player,
+            resumeKey: this.controls[player].pause
+        });
+    }
 
     update(time, delta) {
         if (!this.roundActive) return;
@@ -387,61 +395,57 @@ class GameScene extends Phaser.Scene {
     }
 
 
-        finishRound(winner) {
-            if (!this.roundActive) return;
+            finishRound(winner) {
+                if (!this.roundActive) return;
 
-            this.roundActive = false;
-            this.keysDown.clear();
-            this.physics.pause();
+                this.roundActive = false;
+                this.keysDown.clear();
+                this.physics.pause();
 
-            if (winner) {
-                this.scores[winner]++;
+                if (winner) {
+                    this.scores[winner]++;
 
-                const loser = winner === 'bolt' ? 'rivet' : 'bolt';
-                const robot = loser === 'bolt' ? this.bolt : this.rivet;
+                    const loser = winner === 'bolt' ? 'rivet' : 'bolt';
+                    const robot = loser === 'bolt' ? this.bolt : this.rivet;
 
-                robot.play(`${loser}-death`);
-            } else {
-                this.bolt.play('bolt-death');
-                this.rivet.play('rivet-death');
-            }
+                    robot.play(`${loser}-death`);
+                } else {
+                    this.bolt.play('bolt-death');
+                    this.rivet.play('rivet-death');
+                }
+        
+                // Actualizar indicadores visuales
+                this.updateRoundMarkers();
 
-            this.scoreText.setText(
-                `BOLT ${this.scores.bolt} - ${this.scores.rivet} RIVET`
-            );
+                // Comprobar final de partida
+                if (winner && this.scores[winner] >= 3) {
+                    this.roundMessage.setText(
+                        `¡${winner.toUpperCase()} GANA LA PARTIDA!`
+                    );
 
-            // Actualizar indicadores visuales
-            this.updateRoundMarkers();
+                    this.time.delayedCall(1800, () => {
+                        this.physics.resume();
 
-            // Comprobar final de partida
-            if (winner && this.scores[winner] >= 3) {
+                        this.scene.start('ResultsScene', {
+                            winner: winner,
+                            scores: { ...this.scores }
+                        });
+                    });
+
+                    return;
+                }
+
                 this.roundMessage.setText(
-                    `¡${winner.toUpperCase()} GANA LA PARTIDA!`
+                    winner
+                        ? `¡RONDA PARA ${winner.toUpperCase()}!`
+                        : '¡EMPATE! SE REPITE LA RONDA'
                 );
 
+                // Preparar siguiente ronda
                 this.time.delayedCall(1800, () => {
-                    this.physics.resume();
-
-                    this.scene.start('ResultsScene', {
-                        winner: winner,
-                        scores: { ...this.scores }
-                    });
+                    this.startNextRound(winner !== null);
                 });
-
-                return;
             }
-
-            this.roundMessage.setText(
-                winner
-                    ? `¡RONDA PARA ${winner.toUpperCase()}!`
-                    : '¡EMPATE! SE REPITE LA RONDA'
-            );
-
-            // Preparar siguiente ronda
-            this.time.delayedCall(1800, () => {
-                this.startNextRound(winner !== null);
-            });
-        }
 
 
 
