@@ -52,6 +52,6 @@ Apartados principales:
 | Fase | Contenido | Estado |
 | :--- | :--- | :--- |
 | Fase 1 | Equipo, temática y documento de diseño | Entregada |
-| Fase 2 | Desarrollo del juego en local | Pendiente |
+| Fase 2 | Desarrollo del juego en local | Entregada |
 | Fase 3 | Implementación de la API REST | Pendiente |
 | Fase 4 | Comunicación en tiempo real mediante WebSockets | Pendiente |
