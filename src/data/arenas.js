@@ -36,8 +36,8 @@ const ARENAS = [
         },
 
         platforms: [
-            { x: 50, y: 450, width: 100, height: 180 },
-            { x: 910, y: 450, width: 100, height: 180 },
+            { x: 50, y: 400, width: 100, height: 18 },
+            { x: 910, y: 400, width: 100, height: 18 },
 
 
             // Centrales
