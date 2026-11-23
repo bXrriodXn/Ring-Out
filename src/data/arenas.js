@@ -1,8 +1,9 @@
 
+
 const ARENAS = [
     {
         id: 'training',
-        name: 'ARENA DE ENTRENAMIENTO',
+        name: 'ENTRENAMIENTO',
         fallLimit: 620,
 
         playerSpawns: {
@@ -30,19 +31,36 @@ const ARENAS = [
         fallLimit: 620,
 
         playerSpawns: {
-            bolt: { x: 250, y: 350 },
-            rivet: { x: 710, y: 350 }
+            bolt: { x: 50, y: 350 },
+            rivet: { x: 910, y: 350 }
         },
 
         platforms: [
-            { x: 250, y: 445, width: 300, height: 24 },
-            { x: 710, y: 445, width: 300, height: 24 },
-            { x: 480, y: 340, width: 180, height: 18 }
+            { x: 50, y: 500, width: 100, height: 100 },
+            { x: 910, y: 500, width: 100, height: 100 },
+
+
+
+            { x: 480, y: 200, width: 180, height: 18 },
+
+            { x: 480, y: 300, width: 180, height: 18 },
+
+            { x: 480, y: 400, width: 180, height: 18 },
+
+            { x: 480, y: 500, width: 180, height: 18 },
+
+            //Lado
+            { x: 200, y: 400, width: 50, height: 10 },
+            { x: 780, y: 400, width: 50, height: 10 },
+
+
+            { x: 680, y: 400, width: 50, height: 10 },
+            { x: 280, y: 400, width: 50, height: 10 },
         ],
 
         weaponSpawns: [
-            { x: 350, y: 390, type: 'sword' },
-            { x: 610, y: 390, type: 'spear' }
+            { x: 450, y: 150, type: 'sword' },
+            { x: 500, y: 150, type: 'spear' }
         ],
 
         spikes: [

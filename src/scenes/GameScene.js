@@ -38,22 +38,72 @@ class GameScene extends Phaser.Scene {
         this.hazardHits = { bolt: false, rivet: false };
 
         // Marcadores visuales de rondas
-        this.roundMarkers = {
-            bolt: [],
-            rivet: []
-        };
+      
+    
+        // HUD de los jugadores
+        const hudScale = 1;
+        const hudY = 8;
+        const boltHudX = 8;
+        const rivetHudX = this.scale.width - 276 * hudScale - 8;
+
+        // Retratos animados, detrás de los marcos
+        const boltPortrait = this.add.sprite(
+            boltHudX + 63 * hudScale,
+            hudY + 67 * hudScale,
+            'bolt'
+        ).setScale(1.55).setDepth(99);
+
+        boltPortrait.play('bolt-idle');
+
+        const rivetPortrait = this.add.sprite(
+            rivetHudX + 213 * hudScale,
+            hudY + 67 * hudScale,
+            'rivet'
+        ).setScale(1.55).setFlipX(true).setDepth(99);
+
+        rivetPortrait.play('rivet-idle');
+
+        // Marcos del HUD
+        this.add.image(boltHudX, hudY, 'hudBolt')
+            .setOrigin(0).setScale(hudScale).setDepth(100);
+
+        this.add.image(rivetHudX, hudY, 'hudRivet')
+            .setOrigin(0).setScale(hudScale).setDepth(100);
+
+        // Indicadores de rondas
+        this.roundMarkers = { bolt: [], rivet: [] };
 
         for (let i = 0; i < 3; i++) {
-            // Bolt: izquierda
-            const blueMarker = this.add.sprite(75 + i * 46, 155, 'roundMarkers', 0);
-            blueMarker.setScale(1.5);
-            this.roundMarkers.bolt.push(blueMarker);
+            const blue = this.add.sprite(
+                boltHudX + (155 + i * 44) * hudScale,
+                hudY + 51 * hudScale,
+                'roundMarkers', 0
+            ).setScale(hudScale).setDepth(101);
 
-            // Rivet: derecha
-            const redMarker = this.add.sprite(885 - i * 46, 155, 'roundMarkers', 0);
-            redMarker.setScale(1.5);
-            this.roundMarkers.rivet.push(redMarker);
+            const red = this.add.sprite(
+                rivetHudX + (123 - i * 44) * hudScale,
+                hudY + 51 * hudScale,
+                'roundMarkers', 0
+            ).setScale(hudScale).setDepth(101);
+
+            this.roundMarkers.bolt.push(blue);
+            this.roundMarkers.rivet.push(red);
         }
+
+        // Iconos de armas equipadas
+        this.weaponIcons = {
+            bolt: this.add.image(
+                boltHudX + 141 * hudScale,
+                hudY + 104 * hudScale,
+                'weapon_gloves'
+            ).setScale(hudScale).setDepth(102).setVisible(false),
+
+            rivet: this.add.image(
+                rivetHudX + 134 * hudScale,
+                hudY + 104 * hudScale,
+                'weapon_gloves'
+            ).setScale(hudScale).setDepth(102).setVisible(false)
+        };
 
         // Mensajes de ronda
         this.roundMessage = this.add.text(480, 20, 'RONDA 1', {
@@ -90,20 +140,6 @@ class GameScene extends Phaser.Scene {
         );
 
                       
-        // Mostrar el arma equipada por cada jugador
-        this.weaponLabels = {
-            bolt: this.add.text(90, 105, 'BOLT: Sin arma', {
-                fontFamily: 'Arial',
-                fontSize: '17px',
-                color: '#38caff'
-            }),
-
-            rivet: this.add.text(690, 105, 'RIVET: Sin arma', {
-                fontFamily: 'Arial',
-                fontSize: '17px',
-                color: '#ff5577'
-            })
-        };
 
         // Construir la primera arena
         this.buildArena(this.arenaOrder[this.arenaIndex]);
@@ -307,16 +343,19 @@ class GameScene extends Phaser.Scene {
             pickup.weaponType = spawn.type;
 
             const collect = (robot) => {
-                if (!this.roundActive || !pickup.active) return;
+            if (!this.roundActive || !pickup.active) return;
 
-                robot.equipWeapon(pickup.weaponType);
+            // No recoger si ya tiene un arma
+            if (!robot.equipWeapon(pickup.weaponType)) return;
 
-                this.weaponLabels[robot.robotName].setText(
-                    `${robot.robotName.toUpperCase()}: ${WEAPONS[robot.weaponType].label}`
-                );
+            // Mostrar el arma en el HUD
+            this.weaponIcons[robot.robotName]
+                .setTexture(`weapon_${robot.weaponType}`)
+                .setVisible(true);
 
-                pickup.disableBody(true, true);
-            };
+            // Retirar el arma recogida de la arena
+            pickup.disableBody(true, true);
+        };
 
             this.arenaColliders.push(
                 this.physics.add.overlap(this.bolt, pickup, () => collect(this.bolt))
@@ -329,8 +368,8 @@ class GameScene extends Phaser.Scene {
             this.weaponPickups.push(pickup);
         }
 
-        this.weaponLabels.bolt.setText('BOLT: Sin arma');
-        this.weaponLabels.rivet.setText('RIVET: Sin arma');
+        this.weaponIcons.bolt.setVisible(false);
+        this.weaponIcons.rivet.setVisible(false);
     }
 
     // La escena de pausa recibe dos datos: 
@@ -385,6 +424,7 @@ class GameScene extends Phaser.Scene {
     //solo su primer indicador mostrará el fotograma rojo.
 
     updateRoundMarkers() {
+
         this.roundMarkers.bolt.forEach((marker, index) => {
             marker.setFrame(index < this.scores.bolt ? 1 : 0);
         });

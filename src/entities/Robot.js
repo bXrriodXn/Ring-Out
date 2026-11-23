@@ -58,11 +58,14 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
 
 
     equipWeapon(type) {
-    if (!WEAPONS[type]) return;
+    // Si ya tiene un arma, no puede recoger otra
+    if (this.weaponType !== 'none') return false;
+
+    if (!WEAPONS[type] || type === 'none') return false;
 
     this.weaponType = type;
+    return true;
     }
-
 
     attack(opponent) {
 

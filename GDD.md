@@ -78,7 +78,8 @@ Cada participante juega desde su propio equipo. Los controles son los mismos par
 | Moverse a la derecha | `D` |
 | Saltar | `Espacio` |
 | Atacar | Clic izquierdo del ratón |
-| Abrir la pausa local | `Esc` |
+| Abrir la pausa Bolt | `Esc` |
+| Abrir la pausa Rivet | `P` |
 
 El ataque se dirige hacia el lado al que mira el robot. La dirección queda fijada al iniciar el ataque, aunque el jugador cambie de orientación durante la animación. Es necesario soltar el botón del ratón y volver a pulsarlo para realizar otro ataque.
 
