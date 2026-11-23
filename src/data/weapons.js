@@ -9,29 +9,29 @@ const WEAPONS = {
 
     gloves: {
         label: 'Guanteletes',
-        force: 480,
-        reach: 55,
-        cooldown: 420
+        force: 500,
+        reach: 40,
+        cooldown: 100
     },
 
     sword: {
         label: 'Espada',
         force: 650,
-        reach: 90,
-        cooldown: 520
+        reach: 100,
+        cooldown: 400
     },
 
     spear: {
         label: 'Lanza',
         force: 500,
-        reach: 200,
+        reach: 250,
         cooldown: 650
     },
 
     hammer: {
         label: 'Martillo',
-        force: 850,
+        force: 950,
         reach: 80,
-        cooldown: 800
+        cooldown: 900
     }
 };

@@ -31,31 +31,35 @@ const ARENAS = [
         fallLimit: 620,
 
         playerSpawns: {
-            bolt: { x: 50, y: 350 },
-            rivet: { x: 910, y: 350 }
+            bolt: { x: 50, y: 240 },
+            rivet: { x: 910, y: 240 }
         },
 
         platforms: [
-            { x: 50, y: 500, width: 100, height: 100 },
-            { x: 910, y: 500, width: 100, height: 100 },
+            { x: 50, y: 450, width: 100, height: 180 },
+            { x: 910, y: 450, width: 100, height: 180 },
 
 
-
+            // Centrales
             { x: 480, y: 200, width: 180, height: 18 },
 
             { x: 480, y: 300, width: 180, height: 18 },
 
             { x: 480, y: 400, width: 180, height: 18 },
 
-            { x: 480, y: 500, width: 180, height: 18 },
-
-            //Lado
-            { x: 200, y: 400, width: 50, height: 10 },
-            { x: 780, y: 400, width: 50, height: 10 },
 
 
-            { x: 680, y: 400, width: 50, height: 10 },
-            { x: 280, y: 400, width: 50, height: 10 },
+            //Chiquitinas
+            { x: 150, y: 400, width: 40, height: 10 },
+            { x: 250, y: 400, width: 40, height: 10 },
+            { x: 350, y: 400, width: 40, height: 10 },
+            
+
+
+            { x: 610, y: 400, width: 40, height: 10 },
+            { x: 710, y: 400, width: 40, height: 10 },
+            { x: 810, y: 400, width: 40, height: 10 },
+            
         ],
 
         weaponSpawns: [
@@ -64,7 +68,7 @@ const ARENAS = [
         ],
 
         spikes: [
-            { x: 480, y: 527, width: 1008, height: 24 }
+            { x: 480, y: 530, width: 1008, height: 24 }
             
         ]
     }
