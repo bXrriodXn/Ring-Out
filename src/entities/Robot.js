@@ -50,10 +50,11 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Saltar
-    jump() {
-        if (!this.isGrounded()) return;
+   jump() {
+        if (!this.isGrounded()) return false;
 
         this.setVelocityY(-600);
+        return true;
     }
 
 

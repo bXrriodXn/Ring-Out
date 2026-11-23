@@ -1,5 +1,3 @@
-
-
 class GameScene extends Phaser.Scene {
 
     constructor() {
@@ -211,14 +209,6 @@ class GameScene extends Phaser.Scene {
 
             this.keysDown.add(event.code);
 
-            // Saltos
-            if (event.code === this.controls.bolt.jump) {
-                this.bolt.jump();
-            }
-
-            if (event.code === this.controls.rivet.jump) {
-                this.rivet.jump();
-            }
 
             // Ataques
             if (event.code === this.controls.bolt.attack) {
@@ -463,6 +453,37 @@ class GameScene extends Phaser.Scene {
         this.weaponIcons.rivet.setVisible(false);
     }
 
+
+    // Método que genera cuatro círculos pequeños
+    // que salen de los pies, se dispersan y desaparecen.
+    // Se eliminan automáticamente al terminar su animación.
+
+    emitJumpDust(robot) {
+
+        const x = robot.body.center.x;
+        const y = robot.body.bottom - 4;
+
+        for (let i = 0; i < 4; i++) {
+            const dx = Phaser.Math.Between(-45, 45);
+            const dy = Phaser.Math.Between(-35, -5);
+            const radius = Phaser.Math.Between(2, 4);
+
+            const particle = this.add.circle(
+                x, y, radius, 0x8deaff, 0.95
+            ).setDepth(10);
+
+            this.tweens.add({
+                targets: particle,
+                x: x + dx,
+                y: y + dy,
+                alpha: 0,
+                duration: Phaser.Math.Between(220, 420),
+                onComplete: () => particle.destroy()
+            });
+        }
+    }
+
+
     // La escena de pausa recibe dos datos: 
     // quién la ha iniciado y qué tecla permite reanudar.
 
@@ -481,10 +502,22 @@ class GameScene extends Phaser.Scene {
     update(time, delta) {
         if (!this.roundActive) return;
 
+        // Movimiento horizontal
         this.bolt.updateMovement(this.keysDown, delta);
         this.rivet.updateMovement(this.keysDown, delta);
 
+        // Salto continuo con partículas
+        if (this.keysDown.has(this.controls.bolt.jump)) {
+            if (this.bolt.jump()) {
+                this.emitJumpDust(this.bolt);
+            }
+        }
 
+        if (this.keysDown.has(this.controls.rivet.jump)) {
+            if (this.rivet.jump()) {
+                this.emitJumpDust(this.rivet);
+            }
+        }
         //Detectamos derrota
         // Comprobar caídas o pinchos tocados
         
