@@ -11,8 +11,11 @@ class BootScene extends Phaser.Scene {
     this.load.image('logo', 'img/logo_pixel.png');
     this.load.image('plataformaIzq', 'assets/sprites/plataforma_izquierda.png');
     this.load.image('plataformaDrch', 'assets/sprites/plataforma_derecha.png');
+    
     // Fondo del menú principal
     this.load.image('fondoMenu', 'assets/backgrounds/fondoMenu.png');
+    this.load.image('bgTraining', 'assets/backgrounds/fondoEntrenamiento.png');
+    this.load.image('bgPasarela', 'assets/backgrounds/fondoPasarela.png');
 
        this.load.spritesheet('bolt', 'assets/sprites/bolt.png', {
             frameWidth: 64,

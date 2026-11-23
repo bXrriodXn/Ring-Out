@@ -10,6 +10,25 @@ class GameScene extends Phaser.Scene {
 
         // Establecemos el fondo
         this.cameras.main.setBackgroundColor('#172638');
+
+        // Fondo de la arena de entrenamiento
+        this.trainingBackground = this.add.image(0, 0, 'bgTraining')
+            .setOrigin(0)
+            .setDepth(-50)
+            .setVisible(false);
+
+        this.trainingBackground.setDisplaySize(this.scale.width, this.scale.height);
+
+        // Fondo de Pasarela
+        this.pasarelaBackground = this.add.image(0, 0, 'bgPasarela')
+            .setOrigin(0)
+            .setDepth(-50)
+            .setVisible(false);
+
+        this.pasarelaBackground.setDisplaySize(
+            this.scale.width,
+            this.scale.height
+        );
        
         // Título
         this.arenaNameText = this.add.text(480, 55, 'ARENA', {
@@ -37,14 +56,32 @@ class GameScene extends Phaser.Scene {
         this.arenaHazards = [];
         this.hazardHits = { bolt: false, rivet: false };
 
-        // Marcadores visuales de rondas
-      
-    
+        // Marcadores visuales de rondas        
         // HUD de los jugadores
         const hudScale = 1;
         const hudY = 8;
         const boltHudX = 8;
         const rivetHudX = this.scale.width - 276 * hudScale - 8;
+
+        const hudPortraitBgColor = 0x172638;
+
+        // Fondo detrás del retrato de Bolt
+        this.add.rectangle(
+            boltHudX + 63 * hudScale,
+            hudY + 67 * hudScale,
+            88 * hudScale,
+            88 * hudScale,
+            hudPortraitBgColor
+        ).setDepth(98);
+
+        // Fondo detrás del retrato de Rivet
+        this.add.rectangle(
+            rivetHudX + 213 * hudScale,
+            hudY + 67 * hudScale,
+            88 * hudScale,
+            88 * hudScale,
+            hudPortraitBgColor
+        ).setDepth(98);
 
         // Retratos animados, detrás de los marcos
         const boltPortrait = this.add.sprite(
@@ -94,13 +131,13 @@ class GameScene extends Phaser.Scene {
         this.weaponIcons = {
             bolt: this.add.image(
                 boltHudX + 141 * hudScale,
-                hudY + 104 * hudScale,
+                hudY + 103 * hudScale,
                 'weapon_gloves'
             ).setScale(hudScale).setDepth(102).setVisible(false),
 
             rivet: this.add.image(
                 rivetHudX + 134 * hudScale,
-                hudY + 104 * hudScale,
+                hudY + 103 * hudScale,
                 'weapon_gloves'
             ).setScale(hudScale).setDepth(102).setVisible(false)
         };
@@ -251,6 +288,14 @@ class GameScene extends Phaser.Scene {
 
         this.currentArena = arena;
         this.arenaNameText.setText(arena.name);
+
+        // Mostrar el fondo correspondiente a cada arena
+        this.trainingBackground.setVisible(arena.id === 'training');
+        this.pasarelaBackground.setVisible(arena.id === 'walkway');
+
+        // Si hay fondo, dejamos el color base oscuro igualmente.
+        // Si no hay fondo, se verá solo el color.
+        this.cameras.main.setBackgroundColor('#172638');
 
         // Crear plataformas
         for (const data of arena.platforms) {
