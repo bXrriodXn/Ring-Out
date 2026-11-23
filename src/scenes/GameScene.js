@@ -271,7 +271,17 @@ class GameScene extends Phaser.Scene {
         // Eliminar colisiones y objetos de la arena anterior
         this.arenaColliders.forEach(collider => collider.destroy());
         this.arenaPlatforms.forEach(platform => platform.destroy());
-        this.weaponPickups.forEach(pickup => pickup.destroy());
+        
+        // Para que no queden círculos flotando al 
+        // cambiar de arena o comenzar otra ronda.
+        this.weaponPickups.forEach(pickup => {
+            if (pickup.glow) {
+                this.tweens.killTweensOf(pickup.glow);
+                pickup.glow.destroy();
+            }
+
+            pickup.destroy();
+        });
 
         // Limpiar los pinchos anteriores
         this.arenaHazards.forEach(hazard => {
@@ -398,6 +408,24 @@ class GameScene extends Phaser.Scene {
             pickup.refreshBody();
             pickup.weaponType = type;
 
+            // Latido luminoso del spawn
+            // Para mejorar el apartado visual de las armas
+            const glow = this.add.circle(
+                spawn.x + 0.4, spawn.y, 19, 0x5acfff, 0.16
+            ).setDepth(2);
+
+            pickup.setDepth(3);
+            pickup.glow = glow;
+
+            this.tweens.add({
+                targets: glow,
+                alpha: 0.45,
+                scale: 1.16,
+                duration: 650,
+                yoyo: true,
+                repeat: -1
+            });
+
             const collect = (robot) => {
             if (!this.roundActive || !pickup.active) return;
 
@@ -411,6 +439,13 @@ class GameScene extends Phaser.Scene {
 
             // Retirar el arma recogida de la arena
             pickup.disableBody(true, true);
+
+            // Eliminar el latido al recoger el arma
+            this.tweens.killTweensOf(pickup.glow);
+            pickup.glow.destroy();
+            pickup.glow = null;
+
+
         };
 
             this.arenaColliders.push(
@@ -491,59 +526,57 @@ class GameScene extends Phaser.Scene {
     }
 
 
-            finishRound(winner) {
-                if (!this.roundActive) return;
+    finishRound(winner) {
+        if (!this.roundActive) return;
 
-                this.roundActive = false;
-                this.keysDown.clear();
-                this.physics.pause();
+        this.roundActive = false;
+        this.keysDown.clear();
+        this.physics.pause();
 
-                if (winner) {
-                    this.scores[winner]++;
+        if (winner) {
+            this.scores[winner]++;
 
-                    const loser = winner === 'bolt' ? 'rivet' : 'bolt';
-                    const robot = loser === 'bolt' ? this.bolt : this.rivet;
+            const loser = winner === 'bolt' ? 'rivet' : 'bolt';
+            const robot = loser === 'bolt' ? this.bolt : this.rivet;
 
-                    robot.play(`${loser}-death`);
-                } else {
-                    this.bolt.play('bolt-death');
-                    this.rivet.play('rivet-death');
-                }
-        
-                // Actualizar indicadores visuales
-                this.updateRoundMarkers();
+            robot.play(`${loser}-death`);
+        } else {
+            this.bolt.play('bolt-death');
+            this.rivet.play('rivet-death');
+        }
 
-                // Comprobar final de partida
-                if (winner && this.scores[winner] >= 3) {
-                    this.roundMessage.setText(
-                        `¡${winner.toUpperCase()} GANA LA PARTIDA!`
-                    );
+        // Actualizar indicadores visuales
+        this.updateRoundMarkers();
 
-                    this.time.delayedCall(1800, () => {
-                        this.physics.resume();
+        // Comprobar final de partida
+        if (winner && this.scores[winner] >= 3) {
+            this.roundMessage.setText(
+                `¡${winner.toUpperCase()} GANA LA PARTIDA!`
+            );
 
-                        this.scene.start('ResultsScene', {
-                            winner: winner,
-                            scores: { ...this.scores }
-                        });
-                    });
+            this.time.delayedCall(1800, () => {
+                this.physics.resume();
 
-                    return;
-                }
-
-                this.roundMessage.setText(
-                    winner
-                        ? `¡RONDA PARA ${winner.toUpperCase()}!`
-                        : '¡EMPATE! SE REPITE LA RONDA'
-                );
-
-                // Preparar siguiente ronda
-                this.time.delayedCall(1800, () => {
-                    this.startNextRound(winner !== null);
+                this.scene.start('ResultsScene', {
+                    winner: winner,
+                    scores: { ...this.scores }
                 });
-            }
+            });
 
+            return;
+        }
 
+        this.roundMessage.setText(
+            winner
+                ? `¡RONDA PARA ${winner.toUpperCase()}!`
+                : '¡EMPATE! SE REPITE LA RONDA'
+        );
+
+        // Preparar siguiente ronda
+        this.time.delayedCall(1800, () => {
+            this.startNextRound(winner !== null);
+        });
+    }
 
 
     startNextRound(advanceNumber) {
