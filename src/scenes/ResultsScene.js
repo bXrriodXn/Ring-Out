@@ -14,7 +14,28 @@ class ResultsScene extends Phaser.Scene {
         const centerX = this.scale.width / 2;
         const winnerColor = this.winner === 'bolt' ? '#38caff' : '#ff5577';
 
-        // T�tulo
+
+        // Fondo del menú principal
+        const fondo = this.add.image(
+            centerX,
+            this.scale.height / 2,
+            'fondoMenu'
+        );
+
+        fondo.setDisplaySize(this.scale.width, this.scale.height);
+        fondo.setDepth(-2);
+
+        // Capa oscura para mejorar la legibilidad
+        this.add.rectangle(
+            centerX,
+            this.scale.height / 2,
+            this.scale.width,
+            this.scale.height,
+            0x000000,
+            0.25
+        ).setDepth(-1);
+
+        // Titulo
         this.add.text(centerX, 75, 'FIN DE LA PARTIDA', {
             fontFamily: 'Arial',
             fontSize: '36px',
