@@ -1,0 +1,25 @@
+# Archivos locales de Visual Studio
+.vs/
+
+# Dependencias instaladas con npm
+node_modules/
+
+# Registros de errores de npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Variables de entorno
+.env
+.env.local
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Configuración local del editor
+.vscode/
