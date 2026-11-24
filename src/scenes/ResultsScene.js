@@ -64,7 +64,7 @@ class ResultsScene extends Phaser.Scene {
             bolt.y += 15;  // Si pierde Bolt
         }
 
-        // Funci�n para crear botones
+        // Función para crear botones
         const createButton = (x, text, target) => {
             const button = this.add.rectangle(x, 445, 250, 50, 0x263e52)
                 .setStrokeStyle(2, 0x5aa5ce)
@@ -78,7 +78,13 @@ class ResultsScene extends Phaser.Scene {
 
             button.on('pointerover', () => button.setFillStyle(0x3b6481));
             button.on('pointerout', () => button.setFillStyle(0x263e52));
-            button.on('pointerdown', () => this.scene.start(target));
+            button.on('pointerdown', () => {
+                const sound = target === 'MenuScene' ? 'sfxBack' : 'sfxClick';
+
+                this.sound.play(sound, { volume: 0.6 });
+                this.scene.start(target);
+            });
+            
         };
 
         createButton(330, 'REVANCHA', 'GameScene');

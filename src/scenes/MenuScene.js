@@ -7,6 +7,11 @@ class MenuScene extends Phaser.Scene {
 
     create() {
 
+
+          // Detener la música de partida al volver al menú
+        this.sound.stopByKey('musicGame');
+
+        
         //Dividiendo el ancho y alto de imagen entre 2
         const centerX = this.scale.width / 2;
         const centerY = this.scale.height / 2;
@@ -60,6 +65,26 @@ class MenuScene extends Phaser.Scene {
             }
         ).setOrigin(0.5);
 
+        // Música del menú
+        let menuMusic = this.sound.get('musicMenu');
+
+        if (!menuMusic) {
+            menuMusic = this.sound.add('musicMenu', {
+                loop: true,
+                volume: 0.4
+            });
+        }
+
+        if (!menuMusic.isPlaying) {
+            if (this.sound.locked) {
+                this.sound.once('unlocked', () => {
+                    if (!menuMusic.isPlaying) menuMusic.play();
+                });
+            } else {
+                menuMusic.play();
+            }
+        }
+
        // Opciones del menú
         const options = [
             { texture: 'botonLocal', y: 205, target: 'GameScene' },
@@ -88,6 +113,8 @@ class MenuScene extends Phaser.Scene {
 
             // Clic
             button.on('pointerdown', () => {
+                this.sound.play('sfxClick', { volume: 0.7 });
+
                 if (option.target) {
                     this.scene.start(option.target);
                     return;
@@ -96,6 +123,8 @@ class MenuScene extends Phaser.Scene {
                 const mode = option.texture === 'botonLocal' ? 'local' : 'online';
                 status.setText(`Modo ${mode}: pendiente de implementar`);
             });
+
+
         }
     }
 }

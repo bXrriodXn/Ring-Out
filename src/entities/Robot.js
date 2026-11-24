@@ -128,6 +128,10 @@ class Robot extends Phaser.Physics.Arcade.Sprite {
             900
         );
 
+        this.scene.sound.play('sfxHit', {
+            volume: 2.0
+        });
+
         // Mirar hacia el lado del que viene el golpe
         this.setFlipX(speed > 0);
 

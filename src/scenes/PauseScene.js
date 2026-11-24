@@ -20,9 +20,18 @@ class PauseScene extends Phaser.Scene {
         );
 
         // Panel de pausa
+       // Color según el jugador que ha pausado
+        const pauseColor = this.owner === 'bolt' ? 0x38caff : 0xff5577;
+
+        // Marco exterior
+        this.add.rectangle(
+            centerX, centerY, 516, 316, pauseColor, 0.12
+        ).setStrokeStyle(5, pauseColor);
+
+        // Panel interior
         this.add.rectangle(
             centerX, centerY, 500, 300, 0x263e52
-        ).setStrokeStyle(2, 0x5aa5ce);
+        ).setStrokeStyle(2, pauseColor);
 
         this.add.text(centerX, 180, 'PARTIDA EN PAUSA', {
             fontFamily: 'Arial',
@@ -67,6 +76,7 @@ class PauseScene extends Phaser.Scene {
         back.on('pointerout', () => back.setFillStyle(0x263e52));
 
         back.on('pointerdown', () => {
+            this.sound.play('sfxBack', { volume: 0.6 });
             this.scene.stop('GameScene');
             this.scene.start('MenuScene');
         });
@@ -78,6 +88,7 @@ class PauseScene extends Phaser.Scene {
             event.preventDefault();
 
             this.scene.resume('GameScene');
+            this.sound.play('sfxClick', { volume: 0.7 });
             this.scene.stop();
         };
 

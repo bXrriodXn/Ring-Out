@@ -8,6 +8,15 @@ class BootScene extends Phaser.Scene {
     // cargar recursos antes de crear los objetos de una escena.
     preload() {
 
+    // Efectos de sonido
+    this.load.audio('sfxClick', 'assets/audio/sfx/click.mp3');
+    this.load.audio('sfxHit', 'assets/audio/sfx/hit.mp3');
+    this.load.audio('sfxBack', 'assets/audio/sfx/back.mp3');
+
+    // Música
+    this.load.audio('musicMenu', 'assets/audio/music/menu.mp3');
+    this.load.audio('musicGame', 'assets/audio/music/battle.mp3');
+
     this.load.image('logo', 'img/logo_pixel.png');
     this.load.image('plataformaIzq', 'assets/sprites/plataforma_izquierda.png');
     this.load.image('plataformaDrch', 'assets/sprites/plataforma_derecha.png');

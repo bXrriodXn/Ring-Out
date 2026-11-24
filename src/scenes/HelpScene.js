@@ -118,6 +118,7 @@ class HelpScene extends Phaser.Scene {
         });
 
         backButton.on('pointerdown', () => {
+             this.sound.play('sfxBack', { volume: 0.6 });
             this.scene.start('MenuScene');
         });
     }

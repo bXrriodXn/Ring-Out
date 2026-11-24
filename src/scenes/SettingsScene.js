@@ -221,7 +221,11 @@ class SettingsScene extends Phaser.Scene {
 
         // RESTABLECER
         createButton(345, 505, 230, 42, 'RESTABLECER', () => {
+
+            this.sound.play('sfxClick', { volume: 0.7 });
+
             const defaults = defaultGameSettings();
+
 
             settings.volume = defaults.volume;
             settings.controls = defaults.controls;
@@ -242,6 +246,7 @@ class SettingsScene extends Phaser.Scene {
 
         // VOLVER AL MENU
         createButton(615, 505, 230, 42, 'VOLVER AL MENU', () => {
+            this.sound.play('sfxBack', { volume: 0.6 });
             this.scene.start('MenuScene');
         });
     }

@@ -242,31 +242,30 @@ La carpeta `img/` contiene el logotipo, la paleta de colores, los bocetos de per
 
 ## 6. Sonido
 
-### 6.1. Banda sonora
+### 6.1. Música
 
-El juego tendrá dos músicas en bucle: una tranquila para el menú y otra más enérgica para las partidas. El cambio entre ellas será directo. No habrá voces.
+La banda sonora y los efectos de sonido de **Ring Out** contribuyen a reforzar la ambientación y proporcionar respuesta auditiva a las acciones de los jugadores.
 
-| Pista | Escena | Estilo / ambiente | Fuente |
-| :--- | :--- | :--- | :--- |
-| Música de menú | Menú y pantallas secundarias | Ambiente electrónico relajado | Pendiente de seleccionar o crear |
-| Música de partida | Encuentros | Ritmo electrónico enérgico y arcade | Pendiente de seleccionar o crear |
 
-La fuente y la licencia de las pistas definitivas deberán documentarse antes de incluirlas en el juego.
+Las pistas musicales han sido generadas mediante [Suno AI](https://suno.com/).
+
+- **Música del menú:** se reproduce en bucle durante la navegación por el menú principal.
+- **Música de combate:** se reproduce en bucle durante las partidas, sustituyendo a la música del menú.
 
 ### 6.2. Efectos de sonido
 
-Los efectos de sonido serán breves y de estilo arcade. Acompañarán las acciones sin tapar el resto del sonido del juego.
+- **Click:** sonido utilizado al seleccionar botones y opciones de los menús. [Fuente original](https://youtu.be/l9ZUHT0xMwQ).
+- **Back:** versión editada del sonido Click, con un tono más grave y un volumen reducido. Se utiliza exclusivamente en los botones de volver. [Fuente original](https://youtu.be/l9ZUHT0xMwQ).
+- **Hit:** sonido reproducido cuando un personaje recibe un golpe. Se ha recortado para eliminar los silencios innecesarios. [Fuente original](https://youtu.be/xxO0hjt7_60).
 
-| Efecto | Momento de reproducción |
-| :--- | :--- |
-| Salto | Cuando el robot inicia un salto |
-| Ataque | Cuando comienza un ataque |
-| Impacto | Cuando un ataque golpea al rival |
-| Recoger arma | Cuando un robot recoge un arma |
-| Caída o derrota | Cuando se resuelve una derrota |
-| Interfaz | Al activar botones o cambiar de pantalla |
+### Implementación
 
-El impacto irá acompañado de un sonido corto y una animación sencilla. En ajustes se podrá cambiar por separado el volumen de la música y el de los efectos.
+Los archivos de audio se integran mediante el sistema de sonido de **Phaser 3** y se almacenan en formato MP3.
+
+El juego dispone de un ajuste de volumen general que permite controlar tanto la música como los efectos de sonido.
+
+Los efectos originales se han editado y adaptado para su utilización en el videojuego.
+
 
 ---
 

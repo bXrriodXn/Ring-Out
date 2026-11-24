@@ -9,6 +9,23 @@ class GameScene extends Phaser.Scene {
         // Establecemos el fondo
         this.cameras.main.setBackgroundColor('#172638');
 
+        // Detener música del menú
+        this.sound.stopByKey('musicMenu');
+
+        // Música de combate
+        let gameMusic = this.sound.get('musicGame');
+
+        if (!gameMusic) {
+            gameMusic = this.sound.add('musicGame', {
+                loop: true,
+                volume: 0.4
+            });
+        }
+
+        if (!gameMusic.isPlaying) {
+            gameMusic.play();
+        }
+
         // Fondo de la arena de entrenamiento
         this.trainingBackground = this.add.image(0, 0, 'bgTraining')
             .setOrigin(0)
@@ -251,8 +268,7 @@ class GameScene extends Phaser.Scene {
         const b = this.controls.bolt;
         const r = this.controls.rivet;
 
-
-        
+                
     }
 
 
@@ -505,6 +521,7 @@ class GameScene extends Phaser.Scene {
         // Movimiento horizontal
         this.bolt.updateMovement(this.keysDown, delta);
         this.rivet.updateMovement(this.keysDown, delta);
+        
 
         // Salto continuo con partículas
         if (this.keysDown.has(this.controls.bolt.jump)) {
