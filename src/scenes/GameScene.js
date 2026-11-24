@@ -57,7 +57,11 @@ class GameScene extends Phaser.Scene {
         // Estado de la partida
         this.scores = { bolt: 0, rivet: 0 };
         this.roundNumber = 1;
-        this.roundActive = true;
+
+        // Lo dejamos como false para que el
+        // evento de cuenta atrás lo active
+        
+        this.roundActive = false;
         this.weaponPickups = [];
 
         // Orden aleatorio de arenas
@@ -267,6 +271,9 @@ class GameScene extends Phaser.Scene {
         // Indicaciones de controles
         const b = this.controls.bolt;
         const r = this.controls.rivet;
+
+        // Cuenta atrás inicial
+        this.startCountdown();
 
                 
     }
@@ -514,6 +521,46 @@ class GameScene extends Phaser.Scene {
             resumeKey: this.controls[player].pause
         });
     }
+
+
+    startCountdown() {
+        this.physics.pause();
+        this.keysDown.clear();
+
+        let count = 3;
+
+        const countdownText = this.add.text(480, 270, '3', {
+            fontFamily: 'Arial',
+            fontSize: '100px',
+            fontStyle: 'bold',
+            color: '#ffffff',
+            stroke: '#172638',
+            strokeThickness: 8
+        }).setOrigin(0.5).setDepth(200);
+
+        this.time.addEvent({
+            delay: 1000,
+            repeat: 2,
+            callback: () => {
+                count--;
+
+                if (count > 0) {
+                    countdownText.setText(count.toString());
+                } else {
+                    countdownText.setText('¡YA!');
+                    countdownText.setFontSize(80);
+
+                    this.physics.resume();
+                    this.roundActive = true;
+
+                    this.time.delayedCall(500, () => {
+                        countdownText.destroy();
+                    });
+                }
+            }
+        });
+    }
+
 
     update(time, delta) {
         if (!this.roundActive) return;
